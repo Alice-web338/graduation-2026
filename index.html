@@ -1189,10 +1189,8 @@ footer {
     mat.uniforms.uPixelRatio.value = renderer.getPixelRatio();
   });
 
-  window.addEventListener('scroll', () => {
-    const ratio = 1 - window.scrollY / (window.innerHeight * 3);
-    canvas.style.opacity = Math.max(0.15, Math.min(1, ratio));
-  }, { passive: true });
+  // 粒子始终全亮度显示，不随滚动渐隐
+  canvas.style.opacity = '1';
 
   document.addEventListener('visibilitychange', () => {
     document.hidden ? cancelAnimationFrame(raf) : tick();
