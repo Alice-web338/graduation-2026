@@ -60,7 +60,9 @@ body {
   line-height: 1.8;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  cursor: none;
 }
+body * { cursor: none !important; }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
@@ -601,9 +603,32 @@ footer {
 }
 
 /* ============================================================
+   GLOW CURSOR BALL
+   ============================================================ */
+.cursor-ball {
+  position: fixed;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,0.6) 0%, rgba(245,166,35,0.15) 50%, transparent 70%);
+  box-shadow: 0 0 20px rgba(245,166,35,0.4), 0 0 40px rgba(245,166,35,0.15);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
+  will-change: left, top;
+  mix-blend-mode: screen;
+}
+.cursor-ball.hover {
+  width: 48px; height: 48px;
+  box-shadow: 0 0 30px rgba(245,166,35,0.6), 0 0 60px rgba(245,166,35,0.25);
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
+  body, body * { cursor: auto !important; }
+  .cursor-ball { display: none; }
   .nav-links a { font-size: 10px; padding: 4px 7px; }
   .timeline-grid { grid-template-columns: repeat(2, 1fr); }
   .ms-grid { grid-template-columns: 1fr; }
@@ -623,6 +648,7 @@ footer {
 <body>
 
 <div class="progress" id="progress"></div>
+<div class="cursor-ball" id="cursorBall"></div>
 
 <nav class="nav">
   <a href="#" class="nav-logo">graduation-2026</a>
@@ -1049,6 +1075,39 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') prevPhoto();
   if (e.key === 'ArrowRight') nextPhoto();
 });
+
+// ============================================
+// Glow Cursor Ball
+// ============================================
+(function(){
+  const ball = document.getElementById('cursorBall');
+  if (!ball) return;
+  let mouseX = 0, mouseY = 0;
+  let ballX = 0, ballY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }, { passive: true });
+
+  // Smooth follow animation
+  function animate() {
+    const speed = 0.12;
+    ballX += (mouseX - ballX) * speed;
+    ballY += (mouseY - ballY) * speed;
+    ball.style.left = ballX + 'px';
+    ball.style.top = ballY + 'px';
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  // Enlarge on hover over links/buttons/cards
+  const hoverTargets = document.querySelectorAll('a, button, .btn, .card, .photo-item, .thanks-tag, .tl-card, .lightbox-prev, .lightbox-next');
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => ball.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ball.classList.remove('hover'));
+  });
+})();
 </script>
 </body>
 </html>
