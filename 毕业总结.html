@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毕业总结 · 纸墨书香</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:opsz,wght@8..60,200;8..60,300;8..60,400;8..60,500;8..60,600&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   CSS CUSTOM PROPERTIES — 纸墨书香
+   =========================================== */
+:root {
+    --bg-outer: #1a1a1a;
+    --bg-page: #faf9f7;
+    --text-primary: #1a1a1a;
+    --text-secondary: #5c5956;
+    --text-muted: #9a9590;
+    --accent-crimson: #c41e3a;
+    --accent-crimson-light: rgba(196, 30, 58, 0.10);
+    --line-color: #d4cfc8;
+    --line-light: #e8e4df;
+
+    --font-display: 'Cormorant Garamond', 'Noto Serif SC', serif;
+    --font-body: 'Source Serif 4', 'Noto Serif SC', serif;
+    --font-cjk: 'Noto Serif SC', serif;
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===========================================
+   FIXED 16:9 STAGE
+   =========================================== */
+html, body {
+    width: 100%; height: 100%;
+    margin: 0; overflow: hidden;
+    background: var(--bg-outer);
+}
+.deck-viewport {
+    position: fixed; inset: 0;
+    overflow: hidden; background: var(--bg-outer);
+}
+.deck-stage {
+    position: absolute; left: 0; top: 0;
+    width: 1920px; height: 1080px;
+    overflow: hidden; transform-origin: 0 0;
+    background: var(--bg-page);
+}
+
+/* 每张 slide 占满舞台，仅 active 可见 */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--bg-page);
+}
+.slide.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 每页内容容器 — 使用 padding 而非子元素全部 absolute */
+.slide-inner {
+    width: 100%; height: 100%;
+    padding: 100px 120px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+@media print {
+    html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+    .deck-viewport { position: static; overflow: visible; background: #fff; }
+    .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+    .slide {
+        position: relative; display: block !important;
+        visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        width: 1920px; height: 1080px;
+        break-after: page; page-break-after: always;
+    }
+    .slide:last-child { break-after: auto; page-break-after: auto; }
+    .edit-bar, .deck-nav-hint { display: none !important; }
+}
+
+/* ===========================================
+   动画系统
+   =========================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+}
+.slide.active .reveal { opacity: 1; transform: translateY(0); }
+
+.reveal-scale {
+    opacity: 0; transform: scale(0.94);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+}
+.slide.active .reveal-scale { opacity: 1; transform: scale(1); }
+
+/* 列表项错开入场 */
+.stagger > * {
+    opacity: 0; transform: translateY(16px);
+}
+.slide.active .stagger > *:nth-child(1) { transition: all 0.5s 0.10s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(2) { transition: all 0.5s 0.22s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(3) { transition: all 0.5s 0.34s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(4) { transition: all 0.5s 0.46s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(5) { transition: all 0.5s 0.58s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(6) { transition: all 0.5s 0.70s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(7) { transition: all 0.5s 0.82s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+.slide.active .stagger > *:nth-child(8) { transition: all 0.5s 0.94s var(--ease-out-expo); opacity:1; transform: translateY(0); }
+
+/* ===========================================
+   通用文字样式
+   =========================================== */
+.slide-kicker {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent-crimson);
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+}
+.slide-heading {
+    font-family: var(--font-cjk);
+    font-size: 68px; font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-primary);
+    margin: 0 0 28px 0;
+}
+.slide-body {
+    font-family: var(--font-body);
+    font-size: 22px; font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 0; max-width: 680px;
+}
+.accent-rule {
+    width: 72px; height: 2px;
+    background: var(--accent-crimson);
+    margin: 32px 0 0 0;
+    border: none;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.5s var(--ease-out-expo);
+}
+.slide.active .accent-rule { transform: scaleX(1); transition-delay: 0.7s; }
+
+/* ===========================================
+   SLIDE 1: 封面
+   =========================================== */
+.slide-cover { align-items: flex-start; justify-content: center; position: relative; }
+.cover-top-rule {
+    position: absolute; top: 100px; left: 120px; right: 120px;
+    height: 2px; background: var(--accent-crimson);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.8s 0.2s var(--ease-out-expo);
+}
+.slide.active .cover-top-rule { transform: scaleX(1); }
+
+.cover-year {
+    font-family: var(--font-display);
+    font-size: 20px; font-style: italic;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    margin: 0 0 40px 0;
+}
+.cover-title {
+    font-family: var(--font-cjk);
+    font-size: 140px; font-weight: 600;
+    line-height: 0.92; color: var(--text-primary);
+    margin: 0 0 24px -4px;
+    letter-spacing: 0.06em;
+}
+.cover-subtitle {
+    font-family: var(--font-body);
+    font-size: 22px; font-weight: 300;
+    line-height: 1.6; color: var(--text-secondary);
+    margin: 0; max-width: 560px;
+}
+.cover-big-year {
+    position: absolute; right: 140px; bottom: 200px;
+    font-family: var(--font-display);
+    font-size: 200px; font-weight: 500;
+    line-height: 0.8; color: var(--accent-crimson-light);
+    letter-spacing: -0.02em;
+    pointer-events: none;
+}
+.cover-vertical {
+    position: absolute; top: 100px; right: 160px; bottom: 100px;
+    width: 1px; background: var(--line-light);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.6s 0.6s var(--ease-out-expo);
+}
+.slide.active .cover-vertical { transform: scaleY(1); }
+.cover-bottom-dot {
+    position: absolute; bottom: 100px; left: 120px;
+    display: flex; align-items: center; gap: 16px;
+}
+.cover-dot-line { width: 80px; height: 1px; background: var(--line-color); }
+.cover-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-crimson); }
+.page-num {
+    position: absolute; bottom: 100px; right: 120px;
+    font-family: var(--font-display);
+    font-size: 18px; font-style: italic;
+    color: var(--text-muted);
+}
+
+/* ===========================================
+   SLIDE 2: 时光印记（时间线）
+   =========================================== */
+.timeline-wrap {
+    width: 100%; max-width: 1640px;
+}
+.timeline-line {
+    width: 100%; height: 1px;
+    background: var(--line-color);
+    margin: 16px 0 50px 0;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.7s 0.4s var(--ease-out-expo);
+}
+.slide.active .timeline-line { transform: scaleX(1); }
+.timeline-items {
+    display: flex; gap: 56px;
+}
+.timeline-item {
+    flex: 1; min-width: 0;
+}
+.timeline-year {
+    font-family: var(--font-display);
+    font-size: 44px; font-weight: 600;
+    color: var(--accent-crimson);
+    margin: 0 0 4px 0;
+}
+.timeline-title {
+    font-family: var(--font-cjk);
+    font-size: 26px; font-weight: 500;
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+}
+.timeline-desc {
+    font-family: var(--font-body);
+    font-size: 17px; font-weight: 300;
+    line-height: 1.55; color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ===========================================
+   SLIDE 3-5: 内容页（左文右数字）
+   =========================================== */
+.content-split {
+    display: flex; align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+.content-left-col { max-width: 640px; }
+.content-right-big {
+    font-family: var(--font-display);
+    font-size: 300px; font-weight: 600;
+    line-height: 1; color: var(--accent-crimson-light);
+    letter-spacing: -0.04em;
+    pointer-events: none;
+    margin-right: 60px;
+}
+
+/* key-value 数字块 */
+.stat-row {
+    display: flex; gap: 80px;
+    margin-top: 40px;
+}
+.stat-item {
+    display: flex; flex-direction: column;
+}
+.stat-num {
+    font-family: var(--font-display);
+    font-size: 48px; font-weight: 600;
+    color: var(--accent-crimson);
+    line-height: 1;
+}
+.stat-label {
+    font-family: var(--font-cjk);
+    font-size: 20px; font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 6px;
+}
+.stat-note {
+    font-family: var(--font-body);
+    font-size: 15px; font-weight: 300;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ===========================================
+   SLIDE 4: 课程卡片
+   =========================================== */
+.course-cards {
+    display: flex; gap: 28px;
+    margin-top: 20px;
+}
+.course-card {
+    flex: 1;
+    border: 1px solid var(--line-light);
+    padding: 32px 28px;
+    position: relative;
+    background: var(--bg-page);
+}
+.course-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--accent-crimson);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.5s var(--ease-out-expo);
+}
+.slide.active .course-card:nth-child(1)::before { transform: scaleX(1); transition-delay: 0.6s; }
+.slide.active .course-card:nth-child(2)::before { transform: scaleX(1); transition-delay: 0.8s; }
+.slide.active .course-card:nth-child(3)::before { transform: scaleX(1); transition-delay: 1.0s; }
+.course-icon {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 600;
+    color: var(--accent-crimson);
+    margin: 0 0 12px 0;
+}
+.course-title {
+    font-family: var(--font-cjk);
+    font-size: 22px; font-weight: 500;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+.course-desc {
+    font-family: var(--font-body);
+    font-size: 16px; font-weight: 300;
+    line-height: 1.5; color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ===========================================
+   SLIDE 6: 金句
+   =========================================== */
+.quote-wrap {
+    width: 100%; max-width: 1320px;
+}
+.quote-mark {
+    font-family: var(--font-display);
+    font-size: 180px; font-weight: 600;
+    line-height: 0.6; color: var(--accent-crimson-light);
+    margin: 0 0 -20px 0;
+}
+.quote-text {
+    font-family: var(--font-cjk);
+    font-size: 40px; font-weight: 500;
+    line-height: 1.55; color: var(--text-primary);
+    margin: 0 0 20px 0;
+}
+.quote-author {
+    font-family: var(--font-body);
+    font-size: 20px; font-weight: 300;
+    font-style: italic; color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ===========================================
+   SLIDE 7: 珍贵瞬间 — 照片展示
+   =========================================== */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 12px;
+    width: 100%;
+}
+.photo-card {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    position: relative;
+}
+/* 照片占位框：在你没有放照片时显示提示 */
+.photo-placeholder {
+    width: 100%; height: 100%;
+    border: 1px dashed var(--line-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.02);
+    transition: border-color 0.3s, background 0.3s;
+}
+.photo-placeholder:hover {
+    border-color: var(--accent-crimson);
+    background: rgba(196,30,58,0.03);
+}
+.photo-icon {
+    font-size: 40px;
+    opacity: 0.35;
+}
+.photo-label {
+    font-family: var(--font-cjk);
+    font-size: 16px; font-weight: 400;
+    color: var(--text-muted);
+}
+.photo-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--line-color);
+    background: rgba(0,0,0,0.04);
+    padding: 3px 10px; border-radius: 3px;
+}
+/* ★ 你放入真实照片后，照片会自动填满卡片 */
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ===========================================
+   SLIDE 8: 尾声
+   =========================================== */
+.future-heading {
+    font-family: var(--font-cjk);
+    font-size: 80px; font-weight: 600;
+    line-height: 1.15; color: var(--text-primary);
+    margin: 0 0 20px 0;
+}
+.future-big {
+    position: absolute; right: 140px; bottom: 200px;
+    font-family: var(--font-display);
+    font-size: 240px; font-weight: 500;
+    line-height: 0.8; color: var(--accent-crimson-light);
+    pointer-events: none;
+}
+.future-end {
+    position: absolute; bottom: 140px; right: 160px;
+    font-family: var(--font-display);
+    font-size: 24px; font-weight: 500;
+    font-style: italic; color: var(--text-muted);
+}
+
+/* ===========================================
+   编辑栏 — 始终可见
+   =========================================== */
+.edit-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 48px;
+    background: rgba(26,26,26,0.92);
+    display: flex; align-items: center;
+    gap: 12px; padding: 0 16px;
+    z-index: 10000;
+    font-family: var(--font-body);
+}
+.edit-btn {
+    font-size: 14px; color: #fff;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 16px; border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+.edit-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.6);
+}
+.edit-btn.active {
+    background: var(--accent-crimson);
+    border-color: var(--accent-crimson);
+}
+.edit-hint {
+    font-size: 12px; color: rgba(255,255,255,0.4);
+    margin-left: auto;
+}
+.deck-nav-hint {
+    position: fixed; bottom: 16px; right: 20px;
+    font-family: var(--font-body);
+    font-size: 12px; color: rgba(255,255,255,0.25);
+    z-index: 9999; pointer-events: none;
+}
+
+/* 编辑模式下可编辑元素的样式 */
+.editing [data-editable] {
+    outline: 2px dashed var(--accent-crimson);
+    outline-offset: 2px;
+    cursor: text;
+}
+.editing [data-editable]:focus {
+    outline-style: solid;
+    outline-color: var(--accent-crimson);
+    background: rgba(196, 30, 58, 0.03);
+}
+</style>
+</head>
+<body>
+
+<!-- 编辑工具栏 — 始终可见，点击即可编辑 -->
+<div class="edit-bar">
+    <button class="edit-btn" id="editBtn" onclick="toggleEdit()">✏️ 编辑文字</button>
+    <button class="edit-btn" id="saveBtn" onclick="saveToFile()" style="display:none">💾 下载 HTML</button>
+    <span class="edit-hint">← → 翻页 &nbsp;|&nbsp; 点击「编辑文字」后直接点击页面上你想改的文字</span>
+</div>
+<div class="deck-nav-hint">← → 方向键 / 鼠标滚轮 / 触屏滑动 翻页</div>
+
+<div class="deck-viewport">
+    <main class="deck-stage" id="deckStage">
+
+        <!-- ============ SLIDE 1: 封面 ============ -->
+        <section class="slide active">
+            <div class="slide-inner slide-cover">
+                <div class="cover-top-rule"></div>
+                <p class="cover-year reveal" data-editable>2022 — 2026</p>
+                <p class="slide-kicker reveal" data-editable>Graduation Memoir</p>
+                <h1 class="cover-title reveal" data-editable>毕业总结</h1>
+                <p class="cover-subtitle reveal" style="transition-delay:0.7s" data-editable>四载春秋，从青涩到从容。<br>谨以此，致谢每一段成长与相遇。</p>
+                <hr class="accent-rule" style="margin-left:0">
+                <div class="cover-big-year reveal-scale">2026</div>
+                <div class="cover-vertical"></div>
+                <div class="cover-bottom-dot reveal" style="transition-delay:1.4s">
+                    <div class="cover-dot-line"></div>
+                    <div class="cover-dot"></div>
+                    <div class="cover-dot-line"></div>
+                </div>
+                <span class="page-num">1 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 2: 时光印记 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>02 · Timeline</p>
+                <h2 class="slide-heading reveal" data-editable>时光印记</h2>
+                <div class="timeline-wrap">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-items stagger">
+                        <div class="timeline-item">
+                            <p class="timeline-year" data-editable>2022</p>
+                            <p class="timeline-title" data-editable>初识</p>
+                            <p class="timeline-desc" data-editable>怀揣梦想踏入校园，一切都陌生又新鲜。第一次走进图书馆，第一次通宵赶作业。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <p class="timeline-year" data-editable>2023</p>
+                            <p class="timeline-title" data-editable>沉淀</p>
+                            <p class="timeline-desc" data-editable>课业渐深，方向渐明。在做项目、写论文中，找到了自己真正热爱的东西。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <p class="timeline-year" data-editable>2024</p>
+                            <p class="timeline-title" data-editable>突破</p>
+                            <p class="timeline-desc" data-editable>关键的一年。实习、竞赛、科研都有了突破。开始认真思考未来的方向。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <p class="timeline-year" data-editable>2026</p>
+                            <p class="timeline-title" data-editable>告别</p>
+                            <p class="timeline-desc" data-editable>穿上学位服，走过校园每个角落。带着四年的积累，走向下一段旅程。</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="page-num">2 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 3: 青涩的开场 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>03 · Chapter One</p>
+                <div class="content-split">
+                    <div class="content-left-col">
+                        <h2 class="slide-heading reveal" data-editable>青涩的开场</h2>
+                        <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>还记得报到那天拖着行李箱在人海中找宿舍，第一次班会上自我介绍时的心跳加速……<br><br>那一年，世界很大，我们很小。也正是那份「无知者无畏」，让后来的每一步都变得可能。</p>
+                        <hr class="accent-rule">
+                        <div class="stat-row stagger">
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>18</span>
+                                <span class="stat-label" data-editable>岁 · 启程</span>
+                                <span class="stat-note" data-editable>一个人来到新城市</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>4</span>
+                                <span class="stat-label" data-editable>人 · 室友</span>
+                                <span class="stat-note" data-editable>来自天南海北</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>∞</span>
+                                <span class="stat-label" data-editable>好奇心</span>
+                                <span class="stat-note" data-editable>对一切跃跃欲试</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="page-num">3 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 4: 学海探索 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>04 · Knowledge</p>
+                <h2 class="slide-heading reveal" data-editable>学海探索</h2>
+                <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>从基础课到专业课，从课堂到实验室。学的不只是知识，更是如何学习、如何思考、如何解决问题。</p>
+                <div class="course-cards stagger">
+                    <div class="course-card">
+                        <p class="course-icon" data-editable>A</p>
+                        <p class="course-title" data-editable>专业核心</p>
+                        <p class="course-desc" data-editable>从理论到实践，构建专业能力的基石</p>
+                    </div>
+                    <div class="course-card">
+                        <p class="course-icon" data-editable>B</p>
+                        <p class="course-title" data-editable>项目实战</p>
+                        <p class="course-desc" data-editable>在真实项目中磨炼技能、学会协作</p>
+                    </div>
+                    <div class="course-card">
+                        <p class="course-icon" data-editable>C</p>
+                        <p class="course-title" data-editable>跨界探索</p>
+                        <p class="course-desc" data-editable>选修课打开了看世界的另一扇窗</p>
+                    </div>
+                </div>
+                <span class="page-num">4 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 5: 成长里程碑 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>05 · Milestones</p>
+                <div class="content-split">
+                    <div class="content-left-col">
+                        <h2 class="slide-heading reveal" data-editable>成长里程碑</h2>
+                        <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>每一段认真走过的路，都会在某个时刻被看见。</p>
+                        <hr class="accent-rule">
+                        <div class="stat-row stagger">
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>01</span>
+                                <span class="stat-label" data-editable>奖学金</span>
+                                <span class="stat-note" data-editable>努力被认可的时刻</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>02</span>
+                                <span class="stat-label" data-editable>竞赛获奖</span>
+                                <span class="stat-note" data-editable>团队并肩作战的回忆</span>
+                            </div>
+                        </div>
+                        <div class="stat-row stagger" style="margin-top:32px">
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>03</span>
+                                <span class="stat-label" data-editable>实习经历</span>
+                                <span class="stat-note" data-editable>从校园到职场的第一步</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-editable>04</span>
+                                <span class="stat-label" data-editable>毕业论文</span>
+                                <span class="stat-note" data-editable>大学最后一份作业</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="page-num">5 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 6: 最深感悟 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>06 · Reflection</p>
+                <div class="quote-wrap">
+                    <p class="quote-mark reveal">"</p>
+                    <p class="quote-text reveal" style="transition-delay:0.4s" data-editable>大学教给我最重要的不是某个知识点，而是面对未知时不再害怕的勇气。四年最宝贵的收获，是学会了如何成为更好的自己。</p>
+                    <hr class="accent-rule">
+                    <p class="quote-author reveal" style="transition-delay:1.0s" data-editable>— 毕业前夕，写于图书馆四楼靠窗的位置</p>
+                </div>
+                <span class="page-num">6 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 7: 珍贵瞬间 — 照片展示页 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>07 · Moments</p>
+                <h2 class="slide-heading reveal" data-editable>珍贵瞬间</h2>
+                <!--
+                ★ 如何加入你自己的照片：
+                1. 把照片文件放到与「毕业总结.html」同一个文件夹里
+                2. 在下面把每个 <img> 的 src="" 改成你的照片文件名
+                   例如：src="毕业照1.jpg"  或  src="宿舍合影.png"
+                3. 照片尺寸会自动适配，建议用横版照片效果最好
+                -->
+                <div class="photo-grid stagger">
+                    <div class="photo-card">
+                        <img src="微信图片_20260618163410_594_2.jpg" alt="珍贵瞬间1" style="display:block">
+                    </div>
+                    <div class="photo-card">
+                        <img src="微信图片_20260618163412_595_2.jpg" alt="珍贵瞬间2" style="display:block">
+                    </div>
+                    <div class="photo-card">
+                        <img src="微信图片_20260618163414_597_2.jpg" alt="珍贵瞬间3" style="display:block">
+                    </div>
+                    <div class="photo-card">
+                        <img src="微信图片_20260618163417_598_2.jpg" alt="珍贵瞬间4" style="display:block">
+                    </div>
+                    <div class="photo-card">
+                        <img src="微信图片_20260618164104_600_2.jpg" alt="珍贵瞬间5" style="display:block">
+                    </div>
+                    <div class="photo-card">
+                        <img src="微信图片_20260618163419_599_2.jpg" alt="珍贵瞬间6" style="display:block">
+                        </div>
+                    </div>
+                </div>
+                <span class="page-num">7 / 8</span>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 8: 下一站 ============ -->
+        <section class="slide">
+            <div class="slide-inner">
+                <p class="slide-kicker reveal" data-editable>08 · Forward</p>
+                <h2 class="future-heading reveal" data-editable>下一站，<br>更广阔的世界</h2>
+                <p class="slide-body reveal" style="transition-delay:0.4s" data-editable>四年不是一个句号，而是一个冒号。带着所有的回忆与成长，去往更远的地方，成为更好的自己。</p>
+                <hr class="accent-rule">
+                <div class="future-big reveal-scale">∞</div>
+                <p class="future-end reveal" style="transition-delay:1.2s" data-editable>Class of 2026</p>
+                <span class="page-num">8 / 8</span>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+// ============================================
+// 幻灯片控制器
+// ============================================
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.stage = document.getElementById('deckStage');
+        this.current = 0;
+        this.setupScale();
+        this.setupKeys();
+        this.setupWheel();
+        this.setupTouch();
+        this.show(0);
+    }
+
+    setupScale() {
+        const resize = () => {
+            const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            this.stage.style.transform =
+                `translate(${(window.innerWidth - 1920 * s) / 2}px, ${(window.innerHeight - 1080 * s) / 2}px) scale(${s})`;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+    }
+
+    setupKeys() {
+        document.addEventListener('keydown', (e) => {
+            if (document.body.classList.contains('editing') && e.target.hasAttribute('data-editable')) return;
+            switch (e.key) {
+                case 'ArrowRight': case 'ArrowDown': case ' ':
+                    e.preventDefault(); this.next(); break;
+                case 'ArrowLeft': case 'ArrowUp':
+                    e.preventDefault(); this.prev(); break;
+                case 'Home': e.preventDefault(); this.show(0); break;
+                case 'End': e.preventDefault(); this.show(this.slides.length - 1); break;
+            }
+        });
+    }
+
+    setupWheel() {
+        let t;
+        document.addEventListener('wheel', (e) => {
+            if (document.body.classList.contains('editing') && e.target.hasAttribute('data-editable')) return;
+            e.preventDefault();
+            clearTimeout(t);
+            t = setTimeout(() => { e.deltaY > 0 ? this.next() : this.prev(); }, 60);
+        }, { passive: false });
+    }
+
+    setupTouch() {
+        let sx = 0, sy = 0;
+        this.stage.addEventListener('touchstart', (e) => {
+            sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+        }, { passive: true });
+        this.stage.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - sx;
+            const dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) dx > 0 ? this.prev() : this.next();
+            else if (Math.abs(dy) > 50) dy > 0 ? this.prev() : this.next();
+        });
+    }
+
+    show(i) {
+        this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+        this.slides.forEach((s, idx) => s.classList.toggle('active', idx === this.current));
+    }
+
+    next() { if (this.current < this.slides.length - 1) this.show(this.current + 1); }
+    prev() { if (this.current > 0) this.show(this.current - 1); }
+}
+
+// ============================================
+// 编辑功能
+// ============================================
+let editing = false;
+
+function toggleEdit() {
+    editing = !editing;
+    const btn = document.getElementById('editBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    if (editing) {
+        document.body.classList.add('editing');
+        // 给所有带 data-editable 的元素加上 contenteditable
+        document.querySelectorAll('[data-editable]').forEach(el => {
+            el.setAttribute('contenteditable', 'true');
+        });
+        btn.textContent = '✅ 完成编辑';
+        btn.classList.add('active');
+        saveBtn.style.display = 'block';
+    } else {
+        document.body.classList.remove('editing');
+        document.querySelectorAll('[data-editable]').forEach(el => {
+            el.removeAttribute('contenteditable');
+        });
+        btn.textContent = '✏️ 编辑文字';
+        btn.classList.remove('active');
+        saveBtn.style.display = 'none';
+    }
+}
+
+function saveToFile() {
+    // 先移除编辑状态，保存干净的 HTML
+    const wasEditing = editing;
+    if (wasEditing) toggleEdit();
+
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '毕业总结.html';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // 恢复编辑状态
+    if (wasEditing) toggleEdit();
+}
+
+// 启动
+new SlidePresentation();
+</script>
+</body>
+</html>
