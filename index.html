@@ -4,823 +4,1050 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>毕业纪念 · 2026</title>
+<meta name="description" content="四年青春，从这里再出发。">
+<meta property="og:title" content="毕业纪念 · 2026">
+<meta property="og:description" content="四年青春，从这里再出发。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================
-   基础变量
-   ============================================ */
+/* ============================================================
+   DESIGN SYSTEM — Dark Editorial Terminal
+   ============================================================ */
 :root {
-    --bg: #fafbf8;
-    --white: #ffffff;
-    --green: #5b8c6f;
-    --green-light: #eaf2ed;
-    --green-dark: #3d6349;
-    --text: #1e1e1e;
-    --text-mid: #4a4a4a;
-    --text-light: #8a8a8a;
-    --text-lighter: #b0b0b0;
-    --border: #e8ebe6;
-    --max-w: 1000px;
+  --bg:       #090909;
+  --bg-alt:   rgba(15, 15, 15, 0.55);
+  --bg-card:  rgba(19, 19, 19, 0.6);
+  --bg-hover: #1A1A1A;
+
+  --ink:      #F2EDE8;
+  --ink-2:    #D0CBC5;
+  --ink-3:    #9A9590;
+
+  --term-amber:  #F5A623;
+  --term-amber-bg: rgba(245, 166, 35, 0.06);
+  --term-amber-glow: rgba(245, 166, 35, 0.2);
+  --term-green:  #2DD4A8;
+  --term-green-bg: rgba(45, 212, 168, 0.06);
+
+  --accent:   var(--term-amber);
+  --accent-bg: var(--term-amber-bg);
+  --accent-glow: var(--term-amber-glow);
+  --success:  var(--term-green);
+
+  --ff-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --ff-sans: 'Outfit', 'Inter', sans-serif;
+  --ff-serif: 'Noto Serif SC', 'Songti SC', serif;
+
+  --nav-h: 52px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --max-w: 1080px;
+  --radius: 10px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
 body {
-    font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--ff-sans);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ============================================
-   固定顶部导航
-   ============================================ */
-.nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(250,251,248,0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s;
+::selection { background: var(--accent); color: var(--bg); }
+
+/* === TEXTURE === */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 10000;
 }
-.nav.scrolled { border-bottom-color: var(--border); }
-.nav-inner {
-    max-width: var(--max-w); margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 60px; padding: 0 24px;
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none; z-index: 9999;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3 {
+  font-family: var(--ff-sans);
+  font-weight: 600; line-height: 1.1;
+  letter-spacing: -0.03em; color: var(--ink);
+}
+h1 { font-size: clamp(36px, 7.5vw, 88px); }
+h2 { font-size: clamp(28px, 5vw, 52px); }
+h3 { font-size: clamp(18px, 2.5vw, 22px); }
+p { color: var(--ink-2); line-height: 1.9; }
+a { color: var(--accent); text-decoration: none; }
+
+/* === PROGRESS BAR === */
+.progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--accent);
+  z-index: 200; width: 0%;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 10px var(--accent-glow), 0 0 30px var(--accent-glow);
+}
+
+/* === NAV === */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h); z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 var(--gutter);
+  background: rgba(9,9,9,0.8);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .nav-logo {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 17px; font-weight: 600; color: var(--green-dark);
-    letter-spacing: 0.04em;
+  font-family: var(--ff-mono);
+  font-size: 13px; font-weight: 500;
+  color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
 }
-.nav-dots {
-    display: flex; gap: 10px; list-style: none;
+.nav-logo::before { content: '▸'; color: var(--accent); font-size: 10px; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  font-family: var(--ff-mono);
+  font-size: 12px; font-weight: 500;
+  color: var(--ink-2); text-decoration: none;
+  padding: 5px 12px; border-radius: 6px;
+  transition: all 0.2s;
 }
-.nav-dots a {
-    display: block; width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.3s;
-}
-.nav-dots a.active,
-.nav-dots a:hover {
-    background: var(--green);
-    width: 24px; border-radius: 4px;
-}
+.nav-links a:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: var(--accent-bg); }
 
-/* ============================================
-   每个 Section
-   ============================================ */
+/* === BUTTONS === */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  font-family: var(--ff-mono); font-size: 13px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  border: none; border-radius: 8px;
+  transition: all 0.25s var(--ease-out);
+  letter-spacing: 0.02em;
+}
+.btn-primary {
+  background: var(--accent); color: #1A1000;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px var(--accent-glow), 0 0 50px rgba(245,166,35,0.08);
+}
+.btn-secondary {
+  background: transparent; color: var(--ink);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
+}
+.btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* === CONTAINER === */
+.container {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 0 var(--gutter);
+}
 .section {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 100px 24px;
-    position: relative;
-    overflow: hidden;
+  padding: clamp(80px, 14vw, 180px) 0;
+  position: relative;
 }
-.section-inner {
-    max-width: var(--max-w); width: 100%;
-    position: relative; z-index: 2;
+.section + .section { border-top: 1px solid rgba(255,255,255,0.03); }
+
+/* === SECTION HEADER === */
+.section-hd { text-align: center; margin-bottom: 56px; }
+.section-tag {
+  font-family: var(--ff-mono);
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--accent); opacity: 0.6; margin-bottom: 14px;
+}
+.section-tag::before { content: '// '; opacity: 0.6; }
+.section-title { margin-bottom: 12px; }
+.section-desc {
+  font-size: 16px; color: var(--ink-2);
+  max-width: 520px; margin: 0 auto; line-height: 1.9;
 }
 
-/* ============================================
-   滚动渐现动画
-   ============================================ */
+/* === SCROLL REVEAL === */
 .reveal {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
-                transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
-.reveal.visible {
-    opacity: 1; transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-.reveal-delay-5 { transition-delay: 0.5s; }
+.reveal.in { opacity: 1; transform: translateY(0); }
 
-/* ============================================
-   SECTION 1: 封面 Hero
-   ============================================ */
-#hero {
-    background: linear-gradient(180deg, #fafbf8 0%, #eaf2ed 60%, #fafbf8 100%);
-    text-align: center;
+/* ============================================================
+   HERO — 封面
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  position: relative; overflow: hidden;
+  padding: calc(var(--nav-h) + 40px) var(--gutter) 60px;
 }
-.hero-badge {
-    display: inline-block;
-    font-size: 13px; font-weight: 600;
-    color: var(--green-dark);
-    background: var(--white);
-    padding: 8px 22px; border-radius: 24px;
-    letter-spacing: 0.08em;
-    margin-bottom: 36px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  z-index: 0;
 }
-.hero-year {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 120px; font-weight: 900;
-    color: var(--green);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-    margin-bottom: 0;
+.hero-glow {
+  position: absolute;
+  top: -20%; left: 30%;
+  width: 50%; height: 60%;
+  background: radial-gradient(ellipse, rgba(245,166,35,0.04) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: drift 25s ease-in-out infinite;
 }
-.hero-title {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 56px; font-weight: 600;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: 20px;
+.hero-glow-2 {
+  position: absolute;
+  bottom: -10%; right: 20%;
+  width: 40%; height: 50%;
+  background: radial-gradient(ellipse, rgba(45,212,168,0.03) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: drift 30s ease-in-out infinite reverse;
 }
+@keyframes drift {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(30px,-20px); }
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  text-align: center;
+  max-width: 800px; width: 100%;
+}
+.hero-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 12px; color: var(--ink-3);
+  margin-bottom: 28px; letter-spacing: 0.15em;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.2s var(--ease-out) forwards;
+}
+.hero h1 {
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s var(--ease-out) forwards;
+}
+.hero h1 .highlight { color: var(--accent); }
 .hero-sub {
-    font-size: 18px; color: var(--text-mid);
-    max-width: 480px; margin: 0 auto 48px;
-    line-height: 1.7;
+  font-family: var(--ff-serif);
+  font-weight: 300;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: var(--ink-2); line-height: 1.9;
+  letter-spacing: 0.02em; margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s var(--ease-out) forwards;
 }
-.hero-scroll-hint {
-    display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
-    font-size: 12px; color: var(--text-lighter); letter-spacing: 0.06em;
-    cursor: pointer;
-    animation: bounce 2s infinite;
+.hero-rule {
+  width: 1px; height: 48px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  margin: 0 auto 28px;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.8s ease forwards;
 }
-.hero-scroll-hint span {
-    width: 24px; height: 24px;
-    border-right: 1.5px solid var(--text-lighter);
-    border-bottom: 1.5px solid var(--text-lighter);
-    transform: rotate(45deg);
+.hero-term {
+  max-width: 640px; margin: 48px auto 0;
+  text-align: left;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.0s var(--ease-out) forwards;
 }
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
+.hero-term .terminal-body { min-height: 120px; font-size: 12px; }
+
+.scroll-hint {
+  position: absolute; bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ff-mono);
+  font-size: 10px; color: var(--ink-3);
+  letter-spacing: 0.2em;
+  opacity: 0;
+  animation: fadeIn 1s 2.5s ease forwards;
+}
+.scroll-hint::after {
+  content: '';
+  display: block; width: 1px; height: 28px;
+  background: var(--ink-3);
+  margin: 8px auto 0;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { transform: scaleY(0.3); opacity: 0.2; }
+  50% { transform: scaleY(1); opacity: 0.6; }
 }
 
-/* ============================================
-   SECTION 2: 开篇
-   ============================================ */
-#opening .section-inner {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 80px; align-items: center;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.opening-num {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 200px; font-weight: 900; line-height: 0.7;
-    color: var(--green-light);
-    pointer-events: none;
-}
-.opening-text h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 36px; font-weight: 600; margin-bottom: 20px;
-}
-.opening-text p {
-    font-size: 17px; color: var(--text-mid); line-height: 1.9;
-}
+@keyframes fadeIn { to { opacity: 1; } }
 
-/* ============================================
-   SECTION 3: 入学记忆
-   ============================================ */
-#memory {
-    background: var(--white);
+/* ============================================================
+   TERMINAL WINDOW
+   ============================================================ */
+.terminal {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
-.memory-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center;
+.terminal-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.015);
 }
-.memory-image {
-    aspect-ratio: 4/3; border-radius: 16px;
-    background: var(--green-light);
-    overflow: hidden;
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.terminal-dot.r { background: #FF5F56; }
+.terminal-dot.y { background: #FFBD2E; }
+.terminal-dot.g { background: #27C93F; }
+.terminal-bar-title {
+  flex: 1; text-align: center;
+  font-family: var(--ff-mono);
+  font-size: 11px; color: var(--ink-3); opacity: 0.7;
 }
-.memory-image img {
-    width: 100%; height: 100%; object-fit: cover;
+.terminal-body {
+  padding: 20px 24px;
+  font-family: var(--ff-mono);
+  font-size: 13px; line-height: 1.85;
+  color: var(--ink-2); min-height: 80px;
 }
-.memory-text .kicker {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
-    color: var(--green); text-transform: uppercase;
-    margin-bottom: 12px;
+.terminal-status {
+  padding: 8px 16px;
+  font-family: var(--ff-mono);
+  font-size: 11px; color: var(--term-green); opacity: 0.6;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.01);
 }
-.memory-text h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 36px; font-weight: 600; margin-bottom: 20px;
-}
-.memory-text p {
-    font-size: 17px; color: var(--text-mid); line-height: 1.9;
-}
+.t-prompt { color: var(--term-green); user-select: none; }
+.t-prompt::before { content: '❯ '; opacity: 0.7; }
+.t-file { color: var(--term-amber); }
+.t-success { color: var(--term-green); }
+.t-dim { color: var(--ink-3); }
+.t-think { color: var(--ink-3); font-style: italic; }
 
-/* ============================================
-   SECTION 4-7: 时间线（横向卡片）
-   ============================================ */
-.timeline-section h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 36px; font-weight: 600;
-    margin-bottom: 48px; text-align: center;
+.hero-terminal .t-line {
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s, transform 0.3s;
+  margin-bottom: 2px;
 }
-.tl-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.hero-terminal .t-line.show { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease-out);
+}
+.card:hover {
+  border-color: rgba(245,166,35,0.12);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+}
+.card h3 { font-size: 16px; margin-bottom: 6px; }
+.card p  { font-size: 14px; line-height: 1.9; }
+
+/* ============================================================
+   时间线卡片 (SECTION 3)
+   ============================================================ */
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 .tl-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px 24px;
-    transition: transform 0.3s, box-shadow 0.3s;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  transition: border-color 0.3s, transform 0.3s var(--ease-out);
+  position: relative; overflow: hidden;
+}
+.tl-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.3;
 }
 .tl-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  border-color: rgba(245,166,35,0.12);
+  transform: translateY(-3px);
 }
 .tl-year {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 48px; font-weight: 700;
-    color: var(--green);
-    line-height: 1;
-    margin-bottom: 8px;
+  font-family: var(--ff-mono);
+  font-size: 48px; font-weight: 700;
+  color: var(--accent); line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(245,166,35,0.2);
 }
 .tl-title {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 20px; font-weight: 600;
-    margin-bottom: 10px;
+  font-family: var(--ff-serif);
+  font-size: 20px; font-weight: 600;
+  color: var(--ink); margin-bottom: 8px;
 }
 .tl-desc {
-    font-size: 14px; color: var(--text-light);
-    line-height: 1.7;
+  font-size: 13px; color: var(--ink-2);
+  line-height: 1.7;
 }
 
-/* ============================================
-   SECTION 5: 学习 & 里程碑
-   ============================================ */
-#milestones {
-    background: var(--white);
-}
-.milestone-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+/* ============================================================
+   里程碑卡片 (SECTION 4)
+   ============================================================ */
+.ms-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 .ms-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
-    display: flex; gap: 20px; align-items: flex-start;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.ms-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+  display: flex; gap: 20px; align-items: flex-start;
 }
 .ms-icon {
-    font-size: 36px; flex-shrink: 0;
-}
-.ms-card h3 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 20px; font-weight: 600;
-    margin-bottom: 6px;
-}
-.ms-card p {
-    font-size: 14px; color: var(--text-light);
-    line-height: 1.6;
+  font-size: 32px; flex-shrink: 0;
+  width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-bg);
+  border: 1px solid rgba(245,166,35,0.1);
+  border-radius: var(--radius);
 }
 
-/* ============================================
-   SECTION 6: 金句
-   ============================================ */
-#quote {
-    background: linear-gradient(180deg, #fafbf8 0%, var(--green-light) 100%);
-    text-align: center;
+/* ============================================================
+   金句 (SECTION 5)
+   ============================================================ */
+.quote-block {
+  text-align: center; max-width: 680px; margin: 0 auto; padding: 48px 0;
 }
-.quote-mark {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 160px; font-weight: 900;
-    color: var(--green);
-    line-height: 0.5;
-    margin-bottom: 40px;
+.quote-block blockquote {
+  font-family: var(--ff-serif);
+  font-size: clamp(17px, 2.5vw, 26px);
+  font-weight: 300; color: var(--ink-2);
+  line-height: 1.9; margin-bottom: 20px; position: relative;
 }
-.quote-text {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 32px; font-weight: 500;
-    line-height: 1.6;
-    max-width: 680px; margin: 0 auto 28px;
+.quote-block blockquote::before {
+  content: '"';
+  position: absolute; top: -16px; left: -8px;
+  font-size: 56px; color: var(--accent);
+  opacity: 0.12; font-family: var(--ff-serif); line-height: 1;
 }
 .quote-author {
-    font-size: 16px; color: var(--text-light);
-    font-style: italic;
+  font-family: var(--ff-mono);
+  font-size: 11px; color: var(--ink-3);
+  letter-spacing: 0.12em;
 }
 
-/* ============================================
-   SECTION 7: 照片墙
-   ============================================ */
+/* ============================================================
+   照片墙 (SECTION 6)
+   ============================================================ */
 .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 .photo-item {
-    aspect-ratio: 4/3;
-    border-radius: 14px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
-                box-shadow 0.35s;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(45,212,168,0.06) 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: transform 0.4s var(--ease-out), border-color 0.3s;
+  position: relative;
 }
 .photo-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  transform: scale(1.03);
+  border-color: rgba(245,166,35,0.2);
 }
 .photo-item img {
-    width: 100%; height: 100%;
-    object-fit: cover; display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 1.2s var(--ease-out);
+}
+.photo-item:hover img { transform: scale(1.06); }
+.photo-tag {
+  position: absolute; bottom: 10px; left: 10px;
+  font-family: var(--ff-mono);
+  font-size: 10px; color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 3px 8px; border-radius: 4px;
 }
 
-/* ============================================
-   SECTION 8: 致谢
-   ============================================ */
+/* ============================================================
+   致谢 (SECTION 7)
+   ============================================================ */
 .thanks-cloud {
-    display: flex; flex-wrap: wrap; gap: 12px;
-    justify-content: center; margin-top: 12px;
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center;
 }
 .thanks-tag {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 17px; font-weight: 400;
-    color: var(--text-mid);
-    padding: 12px 24px;
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    background: var(--white);
-    transition: all 0.3s;
+  font-family: var(--ff-serif);
+  font-size: 16px; font-weight: 400;
+  color: var(--ink-2);
+  padding: 12px 26px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 30px;
+  background: var(--bg-card);
+  transition: all 0.3s var(--ease-out);
 }
 .thanks-tag:hover {
-    border-color: var(--green);
-    color: var(--green-dark);
-    background: var(--green-light);
-    transform: translateY(-2px);
+  border-color: rgba(245,166,35,0.2);
+  color: var(--ink);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
 }
 
-/* ============================================
-   SECTION 9: 未来
-   ============================================ */
+/* ============================================================
+   统计数据 (SECTION 8)
+   ============================================================ */
+.stats {
+  padding: 64px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: var(--bg-alt);
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 24px; text-align: center;
+}
+.stat-num {
+  font-family: var(--ff-mono);
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 700; color: var(--accent);
+  line-height: 1; margin-bottom: 12px;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 20px rgba(245,166,35,0.3);
+}
+.stat-label {
+  font-family: var(--ff-mono);
+  font-size: 13px; color: var(--ink-2);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   未来 CTA (SECTION 9)
+   ============================================================ */
 #future {
-    background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
-    text-align: center; color: #fff;
-}
-#future .green-section-title { color: rgba(255,255,255,0.7); }
-#future h2 { color: #fff; }
-#future .future-quote { color: rgba(255,255,255,0.9); }
-#future .future-author { color: rgba(255,255,255,0.6); }
-.future-icon {
-    font-size: 64px; margin-bottom: 28px;
-}
-.future-quote {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 30px; font-weight: 500;
-    line-height: 1.6;
-    max-width: 640px; margin: 0 auto 20px;
-}
-.future-author {
-    font-size: 16px; margin-bottom: 48px;
-}
-.future-btn {
-    display: inline-block;
-    background: #fff;
-    color: var(--green-dark);
-    font-weight: 600;
-    padding: 14px 36px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: transform 0.3s;
-}
-.future-btn:hover { transform: scale(1.05); }
-
-/* ============================================
-   SECTION 10: 尾声
-   ============================================ */
-#end {
-    min-height: 60vh;
-    text-align: center;
-}
-.end-year {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 140px; font-weight: 900;
-    color: var(--green-light);
-    line-height: 1;
-    margin-bottom: 12px;
-}
-.end-text {
-    font-size: 18px; color: var(--text-mid);
-    margin-bottom: 8px;
-}
-.end-by {
-    font-size: 14px; color: var(--text-lighter);
+  background: linear-gradient(180deg, rgba(245,166,35,0.04), transparent);
 }
 
-/* ============================================
-   灯箱
-   ============================================ */
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
 .lightbox {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.94); z-index: 9999;
-    align-items: center; justify-content: center;
-    cursor: pointer;
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.96); z-index: 9999;
+  align-items: center; justify-content: center;
+  cursor: pointer;
 }
 .lightbox.open { display: flex; }
 .lightbox img {
-    max-width: 90vw; max-height: 85vh;
-    border-radius: 8px; object-fit: contain;
+  max-width: 90vw; max-height: 85vh;
+  border-radius: 8px; object-fit: contain;
 }
 .lightbox-close {
-    position: absolute; top: 24px; right: 36px;
-    font-size: 32px; color: #fff; cursor: pointer;
-    background: none; border: none;
+  position: absolute; top: 24px; right: 36px;
+  font-size: 32px; color: #fff; cursor: pointer;
+  background: none; border: none;
 }
 .lightbox-prev, .lightbox-next {
-    position: absolute; top: 50%;
-    font-size: 32px; color: #fff;
-    background: rgba(255,255,255,0.12);
-    border: none; border-radius: 50%;
-    width: 48px; height: 48px; cursor: pointer;
-    transform: translateY(-50%);
-    transition: background 0.2s;
+  position: absolute; top: 50%;
+  font-size: 32px; color: #fff;
+  background: rgba(255,255,255,0.12);
+  border: none; border-radius: 50%;
+  width: 48px; height: 48px; cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 0.2s;
 }
 .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.25); }
 .lightbox-prev { left: 28px; }
 .lightbox-next { right: 28px; }
 
-/* ============================================
-   通用绿色段标题
-   ============================================ */
-.green-section-title {
-    font-size: 12px; font-weight: 600;
-    letter-spacing: 0.12em;
-    color: var(--green);
-    text-transform: uppercase;
-    margin-bottom: 16px;
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  padding: 56px var(--gutter); text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.03);
 }
-.section h2 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 36px; font-weight: 600;
-    margin-bottom: 24px;
+.footer-mark {
+  font-family: var(--ff-mono);
+  font-size: 13px; color: var(--ink-3);
+  margin-bottom: 12px; opacity: 0.6;
 }
-.section-sub {
-    font-size: 17px; color: var(--text-mid);
-    line-height: 1.8;
-    max-width: 640px;
+.footer-line {
+  font-family: var(--ff-mono);
+  font-size: 11px; color: var(--ink-3);
+  letter-spacing: 0.08em; line-height: 2;
 }
 
-/* ============================================
-   响应式
-   ============================================ */
-@media (max-width: 900px) {
-    .hero-year { font-size: 80px; }
-    .hero-title { font-size: 36px; }
-    #opening .section-inner { grid-template-columns: 1fr; gap: 40px; }
-    .opening-num { font-size: 100px; }
-    .memory-grid { grid-template-columns: 1fr; gap: 32px; }
-    .tl-cards { grid-template-columns: repeat(2, 1fr); }
-    .milestone-grid { grid-template-columns: 1fr; }
-    .photo-grid { grid-template-columns: repeat(2, 1fr); }
-    .quote-text { font-size: 24px; }
-    .section h2 { font-size: 28px; }
-    .end-year { font-size: 80px; }
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-links a { font-size: 10px; padding: 4px 7px; }
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  .ms-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .section { padding: clamp(50px, 8vw, 80px) 0; }
 }
-@media (max-width: 500px) {
-    .hero-year { font-size: 56px; }
-    .hero-title { font-size: 26px; }
-    .tl-cards { grid-template-columns: 1fr; }
-    .photo-grid { grid-template-columns: 1fr; }
-    .thanks-cloud { gap: 8px; }
-    .thanks-tag { font-size: 15px; padding: 10px 18px; }
-    .future-quote { font-size: 22px; }
+@media (max-width: 480px) {
+  .timeline-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr; }
+  .thanks-cloud { gap: 8px; }
+  .thanks-tag { font-size: 14px; padding: 10px 18px; }
+  .btn-group { flex-direction: column; align-items: center; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== 导航 ===== -->
-<nav class="nav" id="nav">
-    <div class="nav-inner">
-        <span class="nav-logo">🎓 2026 毕业纪念</span>
-        <ul class="nav-dots" id="navDots">
-            <li><a href="#hero" data-section="0" class="active"></a></li>
-            <li><a href="#opening" data-section="1"></a></li>
-            <li><a href="#memory" data-section="2"></a></li>
-            <li><a href="#timeline" data-section="3"></a></li>
-            <li><a href="#milestones" data-section="4"></a></li>
-            <li><a href="#quote" data-section="5"></a></li>
-            <li><a href="#photos" data-section="6"></a></li>
-            <li><a href="#thanks" data-section="7"></a></li>
-            <li><a href="#future" data-section="8"></a></li>
-            <li><a href="#end" data-section="9"></a></li>
-        </ul>
-    </div>
+<div class="progress" id="progress"></div>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">graduation-2026</a>
+  <div class="nav-links">
+    <a href="#hero" class="active" data-section="0">封面</a>
+    <a href="#opening" data-section="1">开篇</a>
+    <a href="#timeline" data-section="2">时光</a>
+    <a href="#milestones" data-section="3">成长</a>
+    <a href="#photos" data-section="4">相册</a>
+    <a href="#thanks" data-section="5">致谢</a>
+    <a href="#future" data-section="6">未来</a>
+  </div>
 </nav>
 
-<!-- ==================== SECTION 1: 封面 ==================== -->
-<section class="section" id="hero">
-    <div class="section-inner">
-        <div class="hero-badge reveal">🎓 Class of 2026</div>
-        <div class="hero-year reveal reveal-delay-1">2026</div>
-        <h1 class="hero-title reveal reveal-delay-2">四年青春，<br>从这里再出发</h1>
-        <p class="hero-sub reveal reveal-delay-3">无论走多远，这段时光永远是我最宝贵的行囊。</p>
-        <div class="hero-scroll-hint reveal reveal-delay-4" onclick="document.getElementById('opening').scrollIntoView()">
-            <span></span> 向下滑动
-        </div>
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">// Class of 2026 · Graduation Memoir</p>
+    <h1>四年<span class="highlight">青春</span>，<br>从这里再出发</h1>
+    <p class="hero-sub">
+      无论走多远，这段时光永远是我最宝贵的行囊。
+    </p>
+    <div class="hero-rule"></div>
+    <div class="btn-group" style="opacity:0;animation:fadeUp 0.6s 1.2s var(--ease-out) forwards;">
+      <a href="#opening" class="btn btn-primary">→ 开始回顾</a>
+      <a href="#photos" class="btn btn-secondary">相册</a>
     </div>
+
+    <!-- Terminal -->
+    <div class="hero-term">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span class="terminal-bar-title">graduation — ~/memoir</span>
+        </div>
+        <div class="terminal-body" id="term"></div>
+        <div class="terminal-status">✓ 4 years loaded — 10 sections ready</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
 </section>
 
-<!-- ==================== SECTION 2: 开篇 ==================== -->
+<!-- ============ OPENING ============ -->
 <section class="section" id="opening">
-    <div class="section-inner">
-        <div class="opening-num reveal">01</div>
-        <div class="opening-text">
-            <div class="green-section-title reveal reveal-delay-1">Opening</div>
-            <h2 class="reveal reveal-delay-2">故事从这里开始</h2>
-            <p class="reveal reveal-delay-3">
-                2022 年的秋天，我拖着大大的行李箱走进校园。<br>
-                眼前的一切都闪耀着新鲜的光芒——<br>
-                第一次推开图书馆的门、第一次在操场上跑到力竭、<br>
-                第一次在深夜的宿舍和室友聊到天亮。<br><br>
-                那些青涩的「第一次」，<br>
-                后来成了四年间最温暖的底色。
-            </p>
-        </div>
+  <div class="container">
+    <div class="section-hd reveal">
+      <div class="section-tag">Chapter One</div>
+      <h2 class="section-title">故事从这里开始</h2>
+      <p class="section-desc">2022 年的秋天，我拖着大大的行李箱走进了校园。一切都是崭新的。</p>
     </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(45,212,168,0.06));">
+        <img src="微信图片_20260618163410_594_2.jpg" alt="入学记忆" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div>
+        <div class="card">
+          <p style="font-family:var(--ff-serif);font-size:18px;line-height:2;color:var(--ink-2);">
+            报到那天在人群中找不到宿舍楼的慌张，<br>
+            第一次班会自我介绍时的心跳加速，<br>
+            军训时被晒得黝黑的皮肤和结下的友谊……<br><br>
+            那一年，世界很大，我们很小。<br>
+            也正是那份<span style="color:var(--accent);">「无知者无畏」</span>，<br>
+            让后来的每一步都变得可能。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 3: 入学记忆 ==================== -->
-<section class="section" id="memory">
-    <div class="section-inner">
-        <div class="memory-grid">
-            <div class="memory-image reveal">
-                <img src="微信图片_20260618163410_594_2.jpg" alt="校园记忆">
-            </div>
-            <div class="memory-text">
-                <div class="kicker reveal reveal-delay-1">Freshman Year</div>
-                <h2 class="reveal reveal-delay-2">十八岁的秋天</h2>
-                <p class="reveal reveal-delay-3">
-                    报到那天在人群中找不到宿舍楼的慌张，<br>
-                    第一次班会自我介绍时的心跳加速，<br>
-                    军训时被晒得黝黑的皮肤和结下的友谊……<br><br>
-                    那一年，世界很大，我们很小。<br>
-                    也正是那份「无知者无畏」，<br>
-                    让后来的每一步都变得可能。
-                </p>
-            </div>
-        </div>
+<!-- ============ TIMELINE ============ -->
+<section class="section" id="timeline" style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-hd reveal">
+      <div class="section-tag">Timeline</div>
+      <h2 class="section-title">四载春秋</h2>
+      <p class="section-desc">每一个阶段，都有属于它的关键词和故事。</p>
     </div>
+
+    <div class="timeline-grid">
+      <div class="tl-card reveal">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">初识 · 新鲜</div>
+        <div class="tl-desc">拖着行李箱走进校园，一切都陌生又让人兴奋。那些「第一次」，现在想起来还会笑。</div>
+      </div>
+      <div class="tl-card reveal">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">沉淀 · 探索</div>
+        <div class="tl-desc">课业深入，加入社团、做项目、写论文。在忙碌中发现了自己真正热爱的方向。</div>
+      </div>
+      <div class="tl-card reveal">
+        <div class="tl-year">2024</div>
+        <div class="tl-title">突破 · 成长</div>
+        <div class="tl-desc">实习看到校园外的世界，竞赛检验能力。开始认真思考：毕业后要去哪里？</div>
+      </div>
+      <div class="tl-card reveal">
+        <div class="tl-year">2026</div>
+        <div class="tl-title">告别 · 前行</div>
+        <div class="tl-desc">穿上学位服，四年像电影闪过。带着所有的回忆与成长，去往更远的地方。</div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 4: 四年时间线 ==================== -->
-<section class="section timeline-section" id="timeline">
-    <div class="section-inner">
-        <div class="green-section-title reveal" style="text-align:center">Timeline</div>
-        <h2 class="reveal reveal-delay-1">时光印记</h2>
-
-        <div class="tl-cards">
-            <div class="tl-card reveal reveal-delay-1">
-                <div class="tl-year">2022</div>
-                <div class="tl-title">初识 · 新鲜</div>
-                <div class="tl-desc">拖着行李箱走进校园，一切都陌生又让人兴奋。那些「第一次」，现在想起来还会笑。</div>
-            </div>
-            <div class="tl-card reveal reveal-delay-2">
-                <div class="tl-year">2023</div>
-                <div class="tl-title">沉淀 · 探索</div>
-                <div class="tl-desc">课业深入，参加社团、做项目、写论文。在忙碌中找到了自己真正喜欢的方向。</div>
-            </div>
-            <div class="tl-card reveal reveal-delay-3">
-                <div class="tl-year">2024</div>
-                <div class="tl-title">突破 · 成长</div>
-                <div class="tl-desc">实习看到校园外的世界，竞赛检验能力。开始认真思考未来的方向。</div>
-            </div>
-            <div class="tl-card reveal reveal-delay-4">
-                <div class="tl-year">2026</div>
-                <div class="tl-title">告别 · 前行</div>
-                <div class="tl-desc">穿上学位服，四年的画面像电影闪过。带着所有回忆，去往更远的地方。</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==================== SECTION 5: 里程碑 ==================== -->
+<!-- ============ MILESTONES ============ -->
 <section class="section" id="milestones">
-    <div class="section-inner">
-        <div class="green-section-title reveal">Milestones</div>
-        <h2 class="reveal reveal-delay-1">成长里程碑</h2>
-        <p class="section-sub reveal reveal-delay-2" style="margin-bottom:36px">每一段认真走过的路，都会在某个时刻被看见。</p>
+  <div class="container">
+    <div class="section-hd reveal">
+      <div class="section-tag">Milestones</div>
+      <h2 class="section-title">成长里程碑</h2>
+      <p class="section-desc">每一段认真走过的路，都会在某个时刻被看见。</p>
+    </div>
 
-        <div class="milestone-grid">
-            <div class="ms-card reveal reveal-delay-1">
-                <div class="ms-icon">🏆</div>
-                <div>
-                    <h3>奖学金</h3>
-                    <p>努力被认真认可的第一个时刻，给了自己莫大的信心。</p>
-                </div>
-            </div>
-            <div class="ms-card reveal reveal-delay-2">
-                <div class="ms-icon">⚡</div>
-                <div>
-                    <h3>竞赛获奖</h3>
-                    <p>和队友并肩作战的日子，熬夜改方案都是甜的。</p>
-                </div>
-            </div>
-            <div class="ms-card reveal reveal-delay-3">
-                <div class="ms-icon">💼</div>
-                <div>
-                    <h3>实习经历</h3>
-                    <p>从校园到职场的第一步，学到了课本上没有的东西。</p>
-                </div>
-            </div>
-            <div class="ms-card reveal reveal-delay-4">
-                <div class="ms-icon">📝</div>
-                <div>
-                    <h3>毕业论文</h3>
-                    <p>大学最后一份作业，也是对自己四年最好的交代。</p>
-                </div>
-            </div>
+    <div class="ms-grid">
+      <div class="card ms-card reveal">
+        <div class="ms-icon">🏆</div>
+        <div>
+          <h3>奖学金</h3>
+          <p>努力被认可的第一个时刻，给了自己莫大的信心。不只是荣誉，更是对自己的肯定。</p>
         </div>
+      </div>
+      <div class="card ms-card reveal">
+        <div class="ms-icon">⚡</div>
+        <div>
+          <h3>竞赛获奖</h3>
+          <p>和队友并肩作战的日子，熬夜改方案都是甜的。那段时间，我们是最好的我们。</p>
+        </div>
+      </div>
+      <div class="card ms-card reveal">
+        <div class="ms-icon">💼</div>
+        <div>
+          <h3>实习经历</h3>
+          <p>从校园到职场的第一步，学到了课本上没有的东西。第一次感受到理论到实践的距离。</p>
+        </div>
+      </div>
+      <div class="card ms-card reveal">
+        <div class="ms-icon">📝</div>
+        <div>
+          <h3>毕业论文</h3>
+          <p>大学最后一份作业，也是对自己四年最好的交代。每一个通宵，都值了。</p>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 6: 金句 ==================== -->
-<section class="section" id="quote">
-    <div class="section-inner">
-        <div class="quote-mark reveal">"</div>
-        <p class="quote-text reveal reveal-delay-1">
-            大学教给我最重要的不是某个知识点，<br>
-            而是面对未知时不再害怕的勇气。<br>
-            四年最宝贵的收获，<br>
-            是学会了如何成为更好的自己。
-        </p>
-        <p class="quote-author reveal reveal-delay-2">— 毕业前夕，写于图书馆四楼靠窗的位置</p>
+<!-- ============ QUOTE ============ -->
+<section class="section" id="quote" style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="reveal">
+      <div class="quote-block">
+        <blockquote style="font-family:var(--ff-serif);font-size:clamp(17px,2.5vw,26px);font-weight:300;color:var(--ink-2);line-height:1.9;margin-bottom:20px;position:relative;">
+          大学教给我最重要的不是某个知识点，<br>
+          而是面对未知时不再害怕的勇气。<br>
+          四年最宝贵的收获，<br>
+          是学会了如何成为更好的自己。
+        </blockquote>
+        <p class="quote-author">— 毕业前夕，写于图书馆四楼靠窗的位置</p>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 7: 照片墙 ==================== -->
+<!-- ============ PHOTOS ============ -->
 <section class="section" id="photos">
-    <div class="section-inner">
-        <div class="green-section-title reveal" style="text-align:center">Gallery</div>
-        <h2 class="reveal reveal-delay-1" style="text-align:center">珍贵瞬间</h2>
-        <p class="reveal reveal-delay-2" style="text-align:center; color:var(--text-light); margin-bottom:36px;">点击任意照片放大查看</p>
-
-        <div class="photo-grid">
-            <div class="photo-item reveal reveal-delay-1" onclick="openLightbox(0)">
-                <img src="微信图片_20260618163410_594_2.jpg" alt="瞬间1">
-            </div>
-            <div class="photo-item reveal reveal-delay-2" onclick="openLightbox(1)">
-                <img src="微信图片_20260618163412_595_2.jpg" alt="瞬间2">
-            </div>
-            <div class="photo-item reveal reveal-delay-3" onclick="openLightbox(2)">
-                <img src="微信图片_20260618163414_597_2.jpg" alt="瞬间3">
-            </div>
-            <div class="photo-item reveal reveal-delay-3" onclick="openLightbox(3)">
-                <img src="微信图片_20260618163417_598_2.jpg" alt="瞬间4">
-            </div>
-            <div class="photo-item reveal reveal-delay-4" onclick="openLightbox(4)">
-                <img src="微信图片_20260618163419_599_2.jpg" alt="瞬间5">
-            </div>
-            <div class="photo-item reveal reveal-delay-5" onclick="openLightbox(5)">
-                <img src="微信图片_20260618164104_600_2.jpg" alt="瞬间6">
-            </div>
-        </div>
+  <div class="container">
+    <div class="section-hd reveal">
+      <div class="section-tag">Gallery</div>
+      <h2 class="section-title">珍贵瞬间</h2>
+      <p class="section-desc">定格那些回不去的时刻。点击任意照片放大查看。</p>
     </div>
+
+    <div class="photo-grid">
+      <div class="photo-item reveal" onclick="openLightbox(0)">
+        <img src="微信图片_20260618163410_594_2.jpg" alt="瞬间1">
+      </div>
+      <div class="photo-item reveal" onclick="openLightbox(1)">
+        <img src="微信图片_20260618163412_595_2.jpg" alt="瞬间2">
+      </div>
+      <div class="photo-item reveal" onclick="openLightbox(2)">
+        <img src="微信图片_20260618163414_597_2.jpg" alt="瞬间3">
+      </div>
+      <div class="photo-item reveal" onclick="openLightbox(3)">
+        <img src="微信图片_20260618163417_598_2.jpg" alt="瞬间4">
+      </div>
+      <div class="photo-item reveal" onclick="openLightbox(4)">
+        <img src="微信图片_20260618163419_599_2.jpg" alt="瞬间5">
+      </div>
+      <div class="photo-item reveal" onclick="openLightbox(5)">
+        <img src="微信图片_20260618164104_600_2.jpg" alt="瞬间6">
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 8: 致谢 ==================== -->
-<section class="section" id="thanks">
-    <div class="section-inner">
-        <div class="green-section-title reveal" style="text-align:center">Gratitude</div>
-        <h2 class="reveal reveal-delay-1" style="text-align:center">致谢</h2>
-        <p class="reveal reveal-delay-2" style="text-align:center; color:var(--text-light); margin-bottom:32px;">感谢每一个让这四年闪闪发光的人</p>
-
-        <div class="thanks-cloud">
-            <span class="thanks-tag reveal reveal-delay-1">🏠 亲爱的室友们</span>
-            <span class="thanks-tag reveal reveal-delay-2">👨‍🏫 耐心指导的导师</span>
-            <span class="thanks-tag reveal reveal-delay-2">🤝 一起熬夜的队友</span>
-            <span class="thanks-tag reveal reveal-delay-3">❤️ 永远支持的家人</span>
-            <span class="thanks-tag reveal reveal-delay-3">☕ 相伴成长的朋友</span>
-            <span class="thanks-tag reveal reveal-delay-4">📚 图书馆的管理员</span>
-            <span class="thanks-tag reveal reveal-delay-4">🍚 食堂的叔叔阿姨</span>
-            <span class="thanks-tag reveal reveal-delay-5">🌿 这所美丽的校园</span>
-            <span class="thanks-tag reveal reveal-delay-5">✨ 每一个擦肩而过的你</span>
-        </div>
+<!-- ============ THANKS ============ -->
+<section class="section" id="thanks" style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-hd reveal">
+      <div class="section-tag">Gratitude</div>
+      <h2 class="section-title">致谢</h2>
+      <p class="section-desc">感谢每一个让这四年闪闪发光的人。</p>
     </div>
+
+    <div class="thanks-cloud">
+      <span class="thanks-tag reveal">🏠 亲爱的室友们</span>
+      <span class="thanks-tag reveal">👨‍🏫 耐心指导的导师</span>
+      <span class="thanks-tag reveal">🤝 一起熬夜的队友</span>
+      <span class="thanks-tag reveal">❤️ 永远支持的家人</span>
+      <span class="thanks-tag reveal">☕ 相伴成长的朋友</span>
+      <span class="thanks-tag reveal">📚 图书馆的管理员</span>
+      <span class="thanks-tag reveal">🍚 食堂的叔叔阿姨</span>
+      <span class="thanks-tag reveal">🌿 这所美丽的校园</span>
+      <span class="thanks-tag reveal">✨ 每一个擦肩而过的你</span>
+    </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 9: 未来 ==================== -->
+<!-- ============ STATS ============ -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat-item">
+        <div class="stat-num" data-count="4">0</div>
+        <div class="stat-label">年青春</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="48">0</div>
+        <div class="stat-label">个月成长</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="6">0</div>
+        <div class="stat-label">张珍贵照片</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-static="∞">∞</div>
+        <div class="stat-label">无限可能</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUTURE ============ -->
 <section class="section" id="future">
-    <div class="section-inner">
-        <div class="future-icon reveal">🚀</div>
-        <p class="future-quote reveal reveal-delay-1">
-            四年不是一个句号，而是一个冒号。<br>
-            带着所有的回忆与成长，<br>
-            去往更远的地方。
-        </p>
-        <p class="future-author reveal reveal-delay-2">— 写于 2026 年盛夏</p>
-        <a href="#end" class="future-btn reveal reveal-delay-3">⏤ 尾声 ⏤</a>
+  <div class="container" style="text-align:center;">
+    <div class="section-hd reveal">
+      <div class="section-tag">Forward</div>
+      <h2 class="section-title">下一站，更广阔的世界</h2>
+      <p class="section-desc">四年不是一个句号，而是一个冒号。带着所有的回忆与成长，去往更远的地方，成为更好的自己。</p>
     </div>
+    <div class="reveal" style="margin-top:24px;">
+      <a href="#hero" class="btn btn-primary">→ 回到顶部</a>
+    </div>
+  </div>
 </section>
 
-<!-- ==================== SECTION 10: 尾声 ==================== -->
-<section class="section" id="end">
-    <div class="section-inner">
-        <div class="end-year reveal">2026</div>
-        <p class="end-text reveal reveal-delay-1">Class of 2026 · 毕业快乐</p>
-        <p class="end-by reveal reveal-delay-2">愿此去繁花似锦，再相逢依旧如故</p>
-    </div>
-</section>
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-mark">🎓 Class of 2026 · 毕业快乐</div>
+  <p class="footer-line">Made with ❤️ · 2026</p>
+  <p class="footer-line" style="font-style:italic;margin-top:2px;">愿此去繁花似锦，再相逢依旧如故</p>
+</footer>
 
-<!-- ===== 灯箱 ===== -->
+<!-- ============ LIGHTBOX ============ -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    <button class="lightbox-prev" onclick="event.stopPropagation();prevPhoto()">‹</button>
-    <button class="lightbox-next" onclick="event.stopPropagation();nextPhoto()">›</button>
-    <img src="" alt="" id="lightboxImg">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-prev" onclick="event.stopPropagation();prevPhoto()">‹</button>
+  <button class="lightbox-next" onclick="event.stopPropagation();nextPhoto()">›</button>
+  <img src="" alt="" id="lightboxImg">
 </div>
 
 <script>
 // ============================================
-// 滚动触发渐现
+// Terminal 模拟
 // ============================================
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+(function(){
+  const box = document.getElementById('term');
+  if (!box) return;
+  const lines = [
+    { type:'prompt', text:'加载毕业回忆...' },
+    { type:'think', text:'' },
+    { type:'think', text:'  ⟳ 读取 2022 年记忆...' },
+    { type:'file',  text:'  ✓  freshman-year.md' },
+    { type:'think', text:'  ⟳ 读取 2023 年记忆...' },
+    { type:'file',  text:'  ✓  exploration.log' },
+    { type:'think', text:'  ⟳ 读取 2024 年记忆...' },
+    { type:'file',  text:'  ✓  breakthrough.json' },
+    { type:'think', text:'  ⟳ 读取 2026 年记忆...' },
+    { type:'file',  text:'  ✓  graduation.md' },
+    { type:'blank'},
+    { type:'success', text:'  Done — 4 年回忆加载完毕。' },
+  ];
+  let i = 0;
+  function addLine() {
+    if (i >= lines.length) return;
+    const l = lines[i];
+    const el = document.createElement('div');
+    el.className = 't-line';
+    if (l.type === 'blank') el.innerHTML = '&nbsp;';
+    else if (l.type === 'prompt') el.innerHTML = '<span class="t-prompt"></span>' + l.text;
+    else if (l.type === 'think')  el.innerHTML = '<span class="t-think">' + l.text + '</span>';
+    else if (l.type === 'file')   el.innerHTML = '<span class="t-file">' + l.text + '</span>';
+    else if (l.type === 'success') el.innerHTML = '<span class="t-success">' + l.text + '</span>';
+    else el.innerHTML = '<span class="t-dim">' + l.text + '</span>';
+    box.appendChild(el);
+    requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
+    i++;
+    const delay = l.type==='prompt'?1200 : l.type==='think'?700 : l.type==='blank'?100 : l.type==='success'?600 : 160;
+    setTimeout(addLine, delay);
+  }
+  setTimeout(addLine, 1800);
+})();
+
+// ============================================
+// Scroll Reveal
+// ============================================
+(function(){
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => obs.observe(el));
+})();
+
+// ============================================
+// Progress bar
+// ============================================
+(function(){
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+  }, { passive: true });
+})();
+
+// ============================================
+// Nav active dot
+// ============================================
+(function(){
+  const links = document.querySelectorAll('.nav-links a');
+  const sections = [];
+  links.forEach(a => {
+    const id = a.getAttribute('href').replace('#','');
+    const sec = document.getElementById(id);
+    if (sec) sections.push({ el: sec, link: a });
+  });
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + window.innerHeight / 3;
+    sections.forEach(({ el, link }) => {
+      if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
     });
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-reveals.forEach(el => observer.observe(el));
+  }, { passive: true });
+})();
 
 // ============================================
-// 导航高亮 + nav 阴影
+// Stats counter
 // ============================================
-const sections = document.querySelectorAll('.section');
-const dots = document.querySelectorAll('.nav-dots a');
-const nav = document.getElementById('nav');
-
-function updateActiveDot() {
-    const scrollY = window.scrollY + window.innerHeight / 3;
-
-    sections.forEach((sec, i) => {
-        const top = sec.offsetTop;
-        const bottom = top + sec.offsetHeight;
-        if (scrollY >= top && scrollY < bottom) {
-            dots.forEach(d => d.classList.remove('active'));
-            dots[i].classList.add('active');
+(function(){
+  const nums = document.querySelectorAll('.stat-num[data-count]');
+  const statsSection = document.getElementById('stats');
+  let counted = false;
+  const obs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      nums.forEach(el => {
+        const target = parseInt(el.getAttribute('data-count'));
+        const duration = 1600;
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          el.textContent = Math.floor(p * target);
+          if (p < 1) requestAnimationFrame(tick);
         }
-    });
-
-    // nav 阴影
-    nav.classList.toggle('scrolled', window.scrollY > 30);
-}
-
-window.addEventListener('scroll', updateActiveDot, { passive: true });
-updateActiveDot();
+        requestAnimationFrame(tick);
+      });
+    }
+  }, { threshold: 0.5 });
+  if (statsSection) obs.observe(statsSection);
+})();
 
 // ============================================
-// 灯箱
+// Lightbox
 // ============================================
 const photos = [
-    '微信图片_20260618163410_594_2.jpg',
-    '微信图片_20260618163412_595_2.jpg',
-    '微信图片_20260618163414_597_2.jpg',
-    '微信图片_20260618163417_598_2.jpg',
-    '微信图片_20260618163419_599_2.jpg',
-    '微信图片_20260618164104_600_2.jpg',
+  '微信图片_20260618163410_594_2.jpg',
+  '微信图片_20260618163412_595_2.jpg',
+  '微信图片_20260618163414_597_2.jpg',
+  '微信图片_20260618163417_598_2.jpg',
+  '微信图片_20260618163419_599_2.jpg',
+  '微信图片_20260618164104_600_2.jpg',
 ];
 let idx = 0;
-
 function openLightbox(i) {
-    idx = i;
-    document.getElementById('lightboxImg').src = photos[i];
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
+  idx = i;
+  document.getElementById('lightboxImg').src = photos[i];
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
 }
 function prevPhoto() {
-    idx = (idx - 1 + photos.length) % photos.length;
-    document.getElementById('lightboxImg').src = photos[idx];
+  idx = (idx - 1 + photos.length) % photos.length;
+  document.getElementById('lightboxImg').src = photos[idx];
 }
 function nextPhoto() {
-    idx = (idx + 1) % photos.length;
-    document.getElementById('lightboxImg').src = photos[idx];
+  idx = (idx + 1) % photos.length;
+  document.getElementById('lightboxImg').src = photos[idx];
 }
 document.addEventListener('keydown', (e) => {
-    const lb = document.getElementById('lightbox');
-    if (!lb.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') prevPhoto();
-    if (e.key === 'ArrowRight') nextPhoto();
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') prevPhoto();
+  if (e.key === 'ArrowRight') nextPhoto();
 });
 </script>
 </body>
