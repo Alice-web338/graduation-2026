@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   DESIGN SYSTEM — Dark Editorial Terminal
+   DESIGN SYSTEM — 完全复刻 cclearning.cn
    ============================================================ */
 :root {
   --bg:       #090909;
@@ -66,13 +66,15 @@ body * { cursor: none !important; }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
-/* === TEXTURE === */
+/* === 噪点纹理 === */
 body::before {
   content: '';
   position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 10000;
 }
+
+/* === 暗角 === */
 body::after {
   content: '';
   position: fixed; inset: 0;
@@ -85,6 +87,7 @@ h1, h2, h3 {
   font-family: var(--ff-sans);
   font-weight: 600; line-height: 1.1;
   letter-spacing: -0.03em; color: var(--ink);
+  transition: color 0.3s ease;
 }
 h1 { font-size: clamp(36px, 7.5vw, 88px); }
 h2 { font-size: clamp(28px, 5vw, 52px); }
@@ -119,6 +122,7 @@ a { color: var(--accent); text-decoration: none; }
   display: flex; align-items: center; gap: 6px;
 }
 .nav-logo::before { content: '▸'; color: var(--accent); font-size: 10px; }
+
 .nav-links { display: flex; gap: 2px; }
 .nav-links a {
   font-family: var(--ff-mono);
@@ -135,10 +139,11 @@ a { color: var(--accent); text-decoration: none; }
   display: inline-flex; align-items: center; gap: 8px;
   padding: 13px 26px;
   font-family: var(--ff-mono); font-size: 13px; font-weight: 600;
-  text-decoration: none; cursor: pointer;
+  text-decoration: none; cursor: none;
   border: none; border-radius: 8px;
   transition: all 0.25s var(--ease-out);
   letter-spacing: 0.02em;
+  position: relative; overflow: hidden;
 }
 .btn-primary {
   background: var(--accent); color: #1A1000;
@@ -155,6 +160,16 @@ a { color: var(--accent); text-decoration: none; }
   border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
 }
 .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* === BUTTON RIPPLE === */
+.btn .ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transform: scale(0);
+  animation: ripple-anim 0.6s ease-out;
+  pointer-events: none;
+}
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 
 /* === CONTAINER === */
 .container {
@@ -189,7 +204,7 @@ a { color: var(--accent); text-decoration: none; }
 .reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ============================================================
-   HERO — 封面
+   HERO
    ============================================================ */
 .hero {
   min-height: 100vh;
@@ -197,7 +212,10 @@ a { color: var(--accent); text-decoration: none; }
   justify-content: center; align-items: center;
   position: relative; overflow: hidden;
   padding: calc(var(--nav-h) + 40px) var(--gutter) 60px;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
 }
+
+/* 网格背景 */
 .hero::before {
   content: '';
   position: absolute; inset: 0;
@@ -209,7 +227,9 @@ a { color: var(--accent); text-decoration: none; }
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
   z-index: 0;
 }
-.hero-glow {
+
+/* 光晕 */
+.hero-glow-1 {
   position: absolute;
   top: -20%; left: 30%;
   width: 50%; height: 60%;
@@ -247,7 +267,6 @@ a { color: var(--accent); text-decoration: none; }
   opacity: 0;
   animation: fadeUp 0.8s 0.4s var(--ease-out) forwards;
 }
-.hero h1 .highlight { color: var(--accent); }
 .hero-sub {
   font-family: var(--ff-serif);
   font-weight: 300;
@@ -264,13 +283,14 @@ a { color: var(--accent); text-decoration: none; }
   opacity: 0;
   animation: fadeIn 0.8s 0.8s ease forwards;
 }
+
+/* 终端模拟 */
 .hero-term {
   max-width: 640px; margin: 48px auto 0;
   text-align: left;
   opacity: 0;
   animation: fadeUp 0.8s 1.0s var(--ease-out) forwards;
 }
-.hero-term .terminal-body { min-height: 120px; font-size: 12px; }
 
 .scroll-hint {
   position: absolute; bottom: 28px; left: 50%;
@@ -344,12 +364,12 @@ a { color: var(--accent); text-decoration: none; }
 .t-dim { color: var(--ink-3); }
 .t-think { color: var(--ink-3); font-style: italic; }
 
-.hero-terminal .t-line {
+.hero-term .t-line {
   opacity: 0; transform: translateY(4px);
   transition: opacity 0.3s, transform 0.3s;
   margin-bottom: 2px;
 }
-.hero-terminal .t-line.show { opacity: 1; transform: translateY(0); }
+.hero-term .t-line.show { opacity: 1; transform: translateY(0); }
 
 /* ============================================================
    CARDS
@@ -370,28 +390,75 @@ a { color: var(--accent); text-decoration: none; }
 .card p  { font-size: 14px; line-height: 1.9; }
 
 /* ============================================================
-   时间线卡片 (SECTION 3)
+   SHOWCASE (开篇左图右文)
+   ============================================================ */
+.showcase-inner {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 48px; align-items: center;
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+.showcase-inner.in { opacity: 1; transform: translateY(0); }
+
+.showcase-terminal-wrap { perspective: 1000px; }
+.showcase-terminal {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+.showcase-terminal:hover {
+  transform: translateY(-6px) rotateX(1deg);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px var(--accent-glow);
+}
+.showcase-terminal .terminal-body { padding: 0; min-height: auto; }
+.showcase-terminal .terminal-bar { padding: 8px 12px; }
+.showcase-terminal .terminal-dot { width: 8px; height: 8px; }
+.showcase-terminal .terminal-bar-title { font-size: 10px; }
+.showcase-img {
+  aspect-ratio: 16 / 10; overflow: hidden;
+  background: linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(45,212,168,0.06) 100%);
+}
+.showcase-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 1.2s var(--ease-out);
+}
+.showcase-terminal:hover .showcase-img img { transform: scale(1.04); }
+.showcase-terminal .terminal-status { padding: 8px 16px; }
+
+.showcase-tag {
+  font-family: var(--ff-mono);
+  font-size: 11px; color: var(--accent);
+  letter-spacing: 0.1em; margin-bottom: 14px; opacity: 0.7;
+}
+.showcase-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 600; line-height: 1.25; margin-bottom: 16px;
+}
+.showcase-desc {
+  font-size: 15px; color: var(--ink-2);
+  line-height: 2; margin-bottom: 20px;
+}
+
+/* ============================================================
+   时间线卡片
    ============================================================ */
 .timeline-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
 }
 .tl-card {
   background: var(--bg-card);
   border: 1px solid rgba(255,255,255,0.04);
-  border-radius: var(--radius);
-  padding: 32px 24px;
-  text-align: center;
+  border-radius: var(--radius); padding: 32px 24px; text-align: center;
   transition: border-color 0.3s, transform 0.3s var(--ease-out);
   position: relative; overflow: hidden;
 }
 .tl-card::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent);
-  opacity: 0.3;
+  height: 2px; background: var(--accent); opacity: 0.3;
 }
 .tl-card:hover {
   border-color: rgba(245,166,35,0.12);
@@ -410,16 +477,14 @@ a { color: var(--accent); text-decoration: none; }
   color: var(--ink); margin-bottom: 8px;
 }
 .tl-desc {
-  font-size: 13px; color: var(--ink-2);
-  line-height: 1.7;
+  font-size: 13px; color: var(--ink-2); line-height: 1.7;
 }
 
 /* ============================================================
-   里程碑卡片 (SECTION 4)
+   里程碑
    ============================================================ */
 .ms-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
 }
 .ms-card {
   display: flex; gap: 20px; align-items: flex-start;
@@ -434,7 +499,7 @@ a { color: var(--accent); text-decoration: none; }
 }
 
 /* ============================================================
-   金句 (SECTION 5)
+   金句
    ============================================================ */
 .quote-block {
   text-align: center; max-width: 680px; margin: 0 auto; padding: 48px 0;
@@ -458,23 +523,18 @@ a { color: var(--accent); text-decoration: none; }
 }
 
 /* ============================================================
-   照片墙 (SECTION 6)
+   照片墙
    ============================================================ */
 .photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
 }
 .photo-item {
   aspect-ratio: 4 / 3;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(45,212,168,0.06) 100%);
+  border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(135deg, rgba(245,166,35,0.08) 0%, rgba(45,212,168,0.06) 100%);
   border: 1px solid rgba(255,255,255,0.04);
-  cursor: pointer;
+  cursor: none;
   transition: transform 0.4s var(--ease-out), border-color 0.3s;
-  position: relative;
 }
 .photo-item:hover {
   transform: scale(1.03);
@@ -486,20 +546,12 @@ a { color: var(--accent); text-decoration: none; }
   transition: transform 1.2s var(--ease-out);
 }
 .photo-item:hover img { transform: scale(1.06); }
-.photo-tag {
-  position: absolute; bottom: 10px; left: 10px;
-  font-family: var(--ff-mono);
-  font-size: 10px; color: #fff;
-  background: rgba(0,0,0,0.5);
-  padding: 3px 8px; border-radius: 4px;
-}
 
 /* ============================================================
-   致谢 (SECTION 7)
+   致谢标签云
    ============================================================ */
 .thanks-cloud {
-  display: flex; flex-wrap: wrap; gap: 12px;
-  justify-content: center;
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
 }
 .thanks-tag {
   font-family: var(--ff-serif);
@@ -519,7 +571,7 @@ a { color: var(--accent); text-decoration: none; }
 }
 
 /* ============================================================
-   统计数据 (SECTION 8)
+   统计数据
    ============================================================ */
 .stats {
   padding: 64px 0;
@@ -538,6 +590,7 @@ a { color: var(--accent); text-decoration: none; }
   line-height: 1; margin-bottom: 12px;
   letter-spacing: -0.03em;
   text-shadow: 0 0 20px rgba(245,166,35,0.3);
+  min-height: 1.1em;
 }
 .stat-label {
   font-family: var(--ff-mono);
@@ -546,20 +599,13 @@ a { color: var(--accent); text-decoration: none; }
 }
 
 /* ============================================================
-   未来 CTA (SECTION 9)
-   ============================================================ */
-#future {
-  background: linear-gradient(180deg, rgba(245,166,35,0.04), transparent);
-}
-
-/* ============================================================
-   LIGHTBOX
+   灯箱
    ============================================================ */
 .lightbox {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.96); z-index: 9999;
   align-items: center; justify-content: center;
-  cursor: pointer;
+  cursor: none;
 }
 .lightbox.open { display: flex; }
 .lightbox img {
@@ -568,7 +614,7 @@ a { color: var(--accent); text-decoration: none; }
 }
 .lightbox-close {
   position: absolute; top: 24px; right: 36px;
-  font-size: 32px; color: #fff; cursor: pointer;
+  font-size: 32px; color: #fff; cursor: none;
   background: none; border: none;
 }
 .lightbox-prev, .lightbox-next {
@@ -576,13 +622,58 @@ a { color: var(--accent); text-decoration: none; }
   font-size: 32px; color: #fff;
   background: rgba(255,255,255,0.12);
   border: none; border-radius: 50%;
-  width: 48px; height: 48px; cursor: pointer;
+  width: 48px; height: 48px; cursor: none;
   transform: translateY(-50%);
   transition: background 0.2s;
 }
 .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.25); }
 .lightbox-prev { left: 28px; }
 .lightbox-next { right: 28px; }
+
+/* ============================================================
+   GLOW CURSOR BALL
+   ============================================================ */
+.cursor-ball {
+  position: fixed;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
+  will-change: left, top;
+  mix-blend-mode: screen;
+}
+.cursor-ball.hover {
+  width: 48px; height: 48px;
+}
+
+/* ============================================================
+   EDIT TOGGLE — 连点3次 nav-logo 开启编辑
+   ============================================================ */
+.editing .cursor-ball { display: none; }
+.editing body, .editing body * { cursor: auto !important; }
+[data-editable] { transition: outline 0.2s; }
+.editing [data-editable] {
+  outline: 2px dashed var(--accent);
+  outline-offset: 6px;
+  cursor: text !important;
+  border-radius: 4px;
+}
+.editing [data-editable]:focus {
+  outline-style: solid;
+  outline-color: var(--term-green);
+  background: rgba(45,212,168,0.04);
+}
+.edit-badge {
+  display: none;
+  position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #1A1000;
+  font-family: var(--ff-mono); font-size: 12px; font-weight: 600;
+  padding: 6px 18px; border-radius: 20px;
+  z-index: 10000;
+}
+.editing .edit-badge { display: block; }
 
 /* ============================================================
    FOOTER
@@ -603,33 +694,16 @@ footer {
 }
 
 /* ============================================================
-   GLOW CURSOR BALL
-   ============================================================ */
-.cursor-ball {
-  position: fixed;
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,166,35,0.6) 0%, rgba(245,166,35,0.15) 50%, transparent 70%);
-  box-shadow: 0 0 20px rgba(245,166,35,0.4), 0 0 40px rgba(245,166,35,0.15);
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
-  will-change: left, top;
-  mix-blend-mode: screen;
-}
-.cursor-ball.hover {
-  width: 48px; height: 48px;
-  box-shadow: 0 0 30px rgba(245,166,35,0.6), 0 0 60px rgba(245,166,35,0.25);
-}
-
-/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
   body, body * { cursor: auto !important; }
   .cursor-ball { display: none; }
+  .edit-badge { display: none !important; }
+  .editing body, .editing body * { cursor: auto !important; }
+
   .nav-links a { font-size: 10px; padding: 4px 7px; }
+  .showcase-inner { grid-template-columns: 1fr; gap: 24px; }
   .timeline-grid { grid-template-columns: repeat(2, 1fr); }
   .ms-grid { grid-template-columns: 1fr; }
   .photo-grid { grid-template-columns: repeat(2, 1fr); }
@@ -647,36 +721,39 @@ footer {
 </head>
 <body>
 
+<!-- 编辑模式提示 -->
+<div class="edit-badge" id="editBadge">✏️ 编辑模式 — 点击任意文字即可修改 · 再点3次 🎓 退出</div>
+
 <div class="progress" id="progress"></div>
 <div class="cursor-ball" id="cursorBall"></div>
 
 <nav class="nav">
-  <a href="#" class="nav-logo">graduation-2026</a>
+  <a href="#" class="nav-logo" id="navLogo">graduation-2026</a>
   <div class="nav-links">
-    <a href="#hero" class="active" data-section="0">封面</a>
-    <a href="#opening" data-section="1">开篇</a>
-    <a href="#timeline" data-section="2">时光</a>
-    <a href="#milestones" data-section="3">成长</a>
-    <a href="#photos" data-section="4">相册</a>
-    <a href="#thanks" data-section="5">致谢</a>
-    <a href="#future" data-section="6">未来</a>
+    <a href="#hero" class="active" data-section="hero">封面</a>
+    <a href="#opening" data-section="opening">开篇</a>
+    <a href="#timeline" data-section="timeline">时光</a>
+    <a href="#milestones" data-section="milestones">成长</a>
+    <a href="#photos" data-section="photos">相册</a>
+    <a href="#thanks" data-section="thanks">致谢</a>
+    <a href="#future" data-section="future">未来</a>
   </div>
 </nav>
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-glow-1"></div>
   <div class="hero-glow-2"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">// Class of 2026 · Graduation Memoir</p>
-    <h1>四年<span class="highlight">青春</span>，<br>从这里再出发</h1>
-    <p class="hero-sub">
+    <p class="hero-eyebrow" data-editable>// Class of 2026 · Graduation Memoir</p>
+    <h1>四年<span style="color:var(--accent)">青春</span>，<br>从这里再出发</h1>
+    <p class="hero-sub" data-editable>
       无论走多远，这段时光永远是我最宝贵的行囊。
     </p>
     <div class="hero-rule"></div>
     <div class="btn-group" style="opacity:0;animation:fadeUp 0.6s 1.2s var(--ease-out) forwards;">
-      <a href="#opening" class="btn btn-primary">→ 开始回顾</a>
-      <a href="#photos" class="btn btn-secondary">相册</a>
+      <a href="#opening" class="btn btn-primary" data-editable>→ 开始回顾</a>
+      <a href="#photos" class="btn btn-secondary" data-editable>相册</a>
     </div>
 
     <!-- Terminal -->
@@ -689,7 +766,7 @@ footer {
           <span class="terminal-bar-title">graduation — ~/memoir</span>
         </div>
         <div class="terminal-body" id="term"></div>
-        <div class="terminal-status">✓ 4 years loaded — 10 sections ready</div>
+        <div class="terminal-status">✓ 4 years loaded — 8 sections ready</div>
       </div>
     </div>
   </div>
@@ -699,19 +776,27 @@ footer {
 <!-- ============ OPENING ============ -->
 <section class="section" id="opening">
   <div class="container">
-    <div class="section-hd reveal">
-      <div class="section-tag">Chapter One</div>
-      <h2 class="section-title">故事从这里开始</h2>
-      <p class="section-desc">2022 年的秋天，我拖着大大的行李箱走进了校园。一切都是崭新的。</p>
-    </div>
-
-    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(45,212,168,0.06));">
-        <img src="微信图片_20260618163410_594_2.jpg" alt="入学记忆" style="width:100%;height:100%;object-fit:cover;">
+    <div class="showcase-inner" id="showcaseOpening">
+      <div class="showcase-terminal-wrap">
+        <div class="showcase-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
+            <span class="terminal-bar-title">~/freshman-memory — graduation</span>
+          </div>
+          <div class="terminal-body">
+            <div class="showcase-img">
+              <img src="微信图片_20260618163410_594_2.jpg" alt="入学记忆">
+            </div>
+          </div>
+          <div class="terminal-status">✓ freshman-year.md</div>
+        </div>
       </div>
-      <div>
+      <div class="showcase-text">
+        <div class="showcase-tag">// chapter_01</div>
+        <h2 class="showcase-title">故事从这里开始</h2>
+        <p class="showcase-desc">2022 年的秋天，我拖着大大的行李箱走进了校园。眼前的一切都闪耀着新鲜的光芒。</p>
         <div class="card">
-          <p style="font-family:var(--ff-serif);font-size:18px;line-height:2;color:var(--ink-2);">
+          <p style="font-family:var(--ff-serif);font-size:16px;line-height:2;color:var(--ink-2);" data-editable>
             报到那天在人群中找不到宿舍楼的慌张，<br>
             第一次班会自我介绍时的心跳加速，<br>
             军训时被晒得黝黑的皮肤和结下的友谊……<br><br>
@@ -737,23 +822,23 @@ footer {
     <div class="timeline-grid">
       <div class="tl-card reveal">
         <div class="tl-year">2022</div>
-        <div class="tl-title">初识 · 新鲜</div>
-        <div class="tl-desc">拖着行李箱走进校园，一切都陌生又让人兴奋。那些「第一次」，现在想起来还会笑。</div>
+        <div class="tl-title" data-editable>初识 · 新鲜</div>
+        <div class="tl-desc" data-editable>拖着行李箱走进校园，一切都陌生又让人兴奋。那些「第一次」，现在想起来还会笑。</div>
       </div>
       <div class="tl-card reveal">
         <div class="tl-year">2023</div>
-        <div class="tl-title">沉淀 · 探索</div>
-        <div class="tl-desc">课业深入，加入社团、做项目、写论文。在忙碌中发现了自己真正热爱的方向。</div>
+        <div class="tl-title" data-editable>沉淀 · 探索</div>
+        <div class="tl-desc" data-editable>课业深入，加入社团、做项目、写论文。在忙碌中发现了自己真正热爱的方向。</div>
       </div>
       <div class="tl-card reveal">
         <div class="tl-year">2024</div>
-        <div class="tl-title">突破 · 成长</div>
-        <div class="tl-desc">实习看到校园外的世界，竞赛检验能力。开始认真思考：毕业后要去哪里？</div>
+        <div class="tl-title" data-editable>突破 · 成长</div>
+        <div class="tl-desc" data-editable>实习看到校园外的世界，竞赛检验能力。开始认真思考：毕业后要去哪里？</div>
       </div>
       <div class="tl-card reveal">
         <div class="tl-year">2026</div>
-        <div class="tl-title">告别 · 前行</div>
-        <div class="tl-desc">穿上学位服，四年像电影闪过。带着所有的回忆与成长，去往更远的地方。</div>
+        <div class="tl-title" data-editable>告别 · 前行</div>
+        <div class="tl-desc" data-editable>穿上学位服，四年像电影闪过。带着所有回忆与成长，去往更远的地方。</div>
       </div>
     </div>
   </div>
@@ -772,29 +857,29 @@ footer {
       <div class="card ms-card reveal">
         <div class="ms-icon">🏆</div>
         <div>
-          <h3>奖学金</h3>
-          <p>努力被认可的第一个时刻，给了自己莫大的信心。不只是荣誉，更是对自己的肯定。</p>
+          <h3 data-editable>奖学金</h3>
+          <p data-editable>努力被认可的第一个时刻，给了自己莫大的信心。不只是荣誉，更是对自己的肯定。</p>
         </div>
       </div>
       <div class="card ms-card reveal">
         <div class="ms-icon">⚡</div>
         <div>
-          <h3>竞赛获奖</h3>
-          <p>和队友并肩作战的日子，熬夜改方案都是甜的。那段时间，我们是最好的我们。</p>
+          <h3 data-editable>竞赛获奖</h3>
+          <p data-editable>和队友并肩作战的日子，熬夜改方案都是甜的。那段时间，我们是最好的我们。</p>
         </div>
       </div>
       <div class="card ms-card reveal">
         <div class="ms-icon">💼</div>
         <div>
-          <h3>实习经历</h3>
-          <p>从校园到职场的第一步，学到了课本上没有的东西。第一次感受到理论到实践的距离。</p>
+          <h3 data-editable>实习经历</h3>
+          <p data-editable>从校园到职场的第一步，学到了课本上没有的东西。第一次感受到理论到实践的距离。</p>
         </div>
       </div>
       <div class="card ms-card reveal">
         <div class="ms-icon">📝</div>
         <div>
-          <h3>毕业论文</h3>
-          <p>大学最后一份作业，也是对自己四年最好的交代。每一个通宵，都值了。</p>
+          <h3 data-editable>毕业论文</h3>
+          <p data-editable>大学最后一份作业，也是对自己四年最好的交代。每一个通宵，都值了。</p>
         </div>
       </div>
     </div>
@@ -806,13 +891,13 @@ footer {
   <div class="container">
     <div class="reveal">
       <div class="quote-block">
-        <blockquote style="font-family:var(--ff-serif);font-size:clamp(17px,2.5vw,26px);font-weight:300;color:var(--ink-2);line-height:1.9;margin-bottom:20px;position:relative;">
+        <blockquote data-editable>
           大学教给我最重要的不是某个知识点，<br>
           而是面对未知时不再害怕的勇气。<br>
           四年最宝贵的收获，<br>
           是学会了如何成为更好的自己。
         </blockquote>
-        <p class="quote-author">— 毕业前夕，写于图书馆四楼靠窗的位置</p>
+        <p class="quote-author" data-editable>— 毕业前夕，写于图书馆四楼靠窗的位置</p>
       </div>
     </div>
   </div>
@@ -860,15 +945,15 @@ footer {
     </div>
 
     <div class="thanks-cloud">
-      <span class="thanks-tag reveal">🏠 亲爱的室友们</span>
-      <span class="thanks-tag reveal">👨‍🏫 耐心指导的导师</span>
-      <span class="thanks-tag reveal">🤝 一起熬夜的队友</span>
-      <span class="thanks-tag reveal">❤️ 永远支持的家人</span>
-      <span class="thanks-tag reveal">☕ 相伴成长的朋友</span>
-      <span class="thanks-tag reveal">📚 图书馆的管理员</span>
-      <span class="thanks-tag reveal">🍚 食堂的叔叔阿姨</span>
-      <span class="thanks-tag reveal">🌿 这所美丽的校园</span>
-      <span class="thanks-tag reveal">✨ 每一个擦肩而过的你</span>
+      <span class="thanks-tag reveal" data-editable>🏠 亲爱的室友们</span>
+      <span class="thanks-tag reveal" data-editable>👨‍🏫 耐心指导的导师</span>
+      <span class="thanks-tag reveal" data-editable>🤝 一起熬夜的队友</span>
+      <span class="thanks-tag reveal" data-editable>❤️ 永远支持的家人</span>
+      <span class="thanks-tag reveal" data-editable>☕ 相伴成长的朋友</span>
+      <span class="thanks-tag reveal" data-editable>📚 图书馆的管理员</span>
+      <span class="thanks-tag reveal" data-editable>🍚 食堂的叔叔阿姨</span>
+      <span class="thanks-tag reveal" data-editable>🌿 这所美丽的校园</span>
+      <span class="thanks-tag reveal" data-editable>✨ 每一个擦肩而过的你</span>
     </div>
   </div>
 </section>
@@ -903,10 +988,10 @@ footer {
     <div class="section-hd reveal">
       <div class="section-tag">Forward</div>
       <h2 class="section-title">下一站，更广阔的世界</h2>
-      <p class="section-desc">四年不是一个句号，而是一个冒号。带着所有的回忆与成长，去往更远的地方，成为更好的自己。</p>
+      <p class="section-desc" data-editable>四年不是一个句号，而是一个冒号。带着所有的回忆与成长，去往更远的地方，成为更好的自己。</p>
     </div>
     <div class="reveal" style="margin-top:24px;">
-      <a href="#hero" class="btn btn-primary">→ 回到顶部</a>
+      <a href="#hero" class="btn btn-primary" data-editable>→ 回到顶部</a>
     </div>
   </div>
 </section>
@@ -926,25 +1011,212 @@ footer {
   <img src="" alt="" id="lightboxImg">
 </div>
 
+<!-- Three.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script>
 // ============================================
-// Terminal 模拟
+// PARTICLE STARFIELD (2200 particles + mouse repulsion)
+// ============================================
+(function(){
+  if (typeof THREE === 'undefined') return;
+  if ('ontouchstart' in window || window.innerWidth < 768) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;';
+  document.body.prepend(canvas);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 50;
+
+  const mouse = { x:0, y:0, tx:0, ty:0 };
+  document.addEventListener('mousemove', (e) => {
+    mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.ty = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+
+  const COUNT = 2200, SPREAD = 80;
+  const posArr = new Float32Array(COUNT * 3);
+  const velArr = new Float32Array(COUNT * 3);
+  const sizeArr = new Float32Array(COUNT);
+  const opaArr = new Float32Array(COUNT);
+  const phaseArr = new Float32Array(COUNT);
+
+  for (let i = 0; i < COUNT; i++) {
+    const i3 = i * 3;
+    posArr[i3]     = (Math.random() - 0.5) * SPREAD;
+    posArr[i3+1]   = (Math.random() - 0.5) * SPREAD;
+    posArr[i3+2]   = (Math.random() - 0.5) * SPREAD;
+    velArr[i3]     = (Math.random() - 0.5) * 0.004;
+    velArr[i3+1]   = (Math.random() - 0.5) * 0.004;
+    velArr[i3+2]   = (Math.random() - 0.5) * 0.004;
+    sizeArr[i]     = Math.random() * 2.4 + 0.6;
+    opaArr[i]      = Math.random() * 0.5 + 0.35;
+    phaseArr[i]    = Math.random() * Math.PI * 2;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+  geo.setAttribute('aSize',    new THREE.BufferAttribute(sizeArr, 1));
+  geo.setAttribute('aOpacity', new THREE.BufferAttribute(opaArr, 1));
+  geo.setAttribute('aPhase',   new THREE.BufferAttribute(phaseArr, 1));
+
+  const mat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: {
+      uTime: { value: 0 },
+      uPixelRatio: { value: renderer.getPixelRatio() },
+      uColor:  { value: new THREE.Color(0xf5a623) },
+      uColor2: { value: new THREE.Color(0x2dd4a8) },
+    },
+    vertexShader: `
+      attribute float aSize; attribute float aOpacity; attribute float aPhase;
+      uniform float uTime; uniform float uPixelRatio;
+      varying float vOpacity; varying float vPhase;
+      void main() {
+        vec3 p = position;
+        p.y += sin(uTime * 0.25 + aPhase) * 0.6;
+        p.x += cos(uTime * 0.18 + aPhase * 1.3) * 0.4;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mv;
+        gl_PointSize = aSize * uPixelRatio * (80.0 / -mv.z);
+        vOpacity = aOpacity; vPhase = aPhase;
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uColor; uniform vec3 uColor2; uniform float uTime;
+      varying float vOpacity; varying float vPhase;
+      void main() {
+        float d = length(gl_PointCoord - vec2(0.5));
+        if (d > 0.5) discard;
+        float alpha = smoothstep(0.5, 0.0, d) * vOpacity;
+        vec3 col = mix(uColor, uColor2, sin(uTime * 0.4 + vPhase) * 0.5 + 0.5);
+        gl_FragColor = vec4(col, alpha);
+      }
+    `,
+  });
+
+  scene.add(new THREE.Points(geo, mat));
+
+  // Line connections
+  const LINE_MAX = 300;
+  const linePos = new Float32Array(LINE_MAX * 6);
+  const lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
+  lineGeo.setDrawRange(0, 0);
+
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0xf5a623, transparent: true, opacity: 0.1,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  scene.add(new THREE.LineSegments(lineGeo, lineMat));
+
+  let raf;
+  const clock = new THREE.Clock();
+  function tick() {
+    raf = requestAnimationFrame(tick);
+    const t = clock.getElapsedTime();
+
+    mouse.x += (mouse.tx - mouse.x) * 0.03;
+    mouse.y += (mouse.ty - mouse.y) * 0.03;
+
+    const p = geo.attributes.position.array;
+    const mx = mouse.x * 30, my = mouse.y * 20;
+    const half = SPREAD / 2;
+
+    for (let i = 0; i < COUNT; i++) {
+      const i3 = i * 3;
+      p[i3]   += velArr[i3];
+      p[i3+1] += velArr[i3+1];
+      p[i3+2] += velArr[i3+2];
+
+      const dx = p[i3] - mx, dy = p[i3+1] - my;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 10 && dist > 0.01) {
+        const f = (10 - dist) / 10;
+        const nx = dx / dist, ny = dy / dist;
+        p[i3]   += nx * f * 0.25;
+        p[i3+1] += ny * f * 0.25;
+        p[i3]   -= nx * f * 0.04;
+        p[i3+1] -= ny * f * 0.04;
+      }
+
+      if (p[i3]   > half) p[i3] = -half; if (p[i3]   < -half) p[i3] = half;
+      if (p[i3+1] > half) p[i3+1] = -half; if (p[i3+1] < -half) p[i3+1] = half;
+      if (p[i3+2] > half) p[i3+2] = -half; if (p[i3+2] < -half) p[i3+2] = half;
+    }
+
+    geo.attributes.position.needsUpdate = true;
+    mat.uniforms.uTime.value = t;
+
+    let li = 0;
+    const thresh = 5.5;
+    const lp = lineGeo.attributes.position.array;
+    const step = Math.max(1, Math.floor(COUNT / 500));
+    for (let i = 0; i < COUNT && li < LINE_MAX; i += step) {
+      const i3 = i * 3;
+      for (let j = i + step; j < COUNT && li < LINE_MAX; j += step) {
+        const j3 = j * 3;
+        const dx = p[i3]-p[j3], dy = p[i3+1]-p[j3+1], dz = p[i3+2]-p[j3+2];
+        if (dx*dx+dy*dy+dz*dz < thresh*thresh) {
+          const o = li * 6;
+          lp[o]=p[i3]; lp[o+1]=p[i3+1]; lp[o+2]=p[i3+2];
+          lp[o+3]=p[j3]; lp[o+4]=p[j3+1]; lp[o+5]=p[j3+2];
+          li++;
+        }
+      }
+    }
+    lineGeo.setDrawRange(0, li*2);
+    lineGeo.attributes.position.needsUpdate = true;
+
+    camera.position.x = mouse.x * 1.5;
+    camera.position.y = mouse.y * 1;
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+  }
+  tick();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    mat.uniforms.uPixelRatio.value = renderer.getPixelRatio();
+  });
+
+  window.addEventListener('scroll', () => {
+    const ratio = 1 - window.scrollY / (window.innerHeight * 3);
+    canvas.style.opacity = Math.max(0.15, Math.min(1, ratio));
+  }, { passive: true });
+
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? cancelAnimationFrame(raf) : tick();
+  });
+})();
+
+// ============================================
+// HERO TERMINAL
 // ============================================
 (function(){
   const box = document.getElementById('term');
   if (!box) return;
   const lines = [
-    { type:'prompt', text:'加载毕业回忆...' },
-    { type:'think', text:'' },
-    { type:'think', text:'  ⟳ 读取 2022 年记忆...' },
-    { type:'file',  text:'  ✓  freshman-year.md' },
-    { type:'think', text:'  ⟳ 读取 2023 年记忆...' },
-    { type:'file',  text:'  ✓  exploration.log' },
-    { type:'think', text:'  ⟳ 读取 2024 年记忆...' },
-    { type:'file',  text:'  ✓  breakthrough.json' },
-    { type:'think', text:'  ⟳ 读取 2026 年记忆...' },
-    { type:'file',  text:'  ✓  graduation.md' },
-    { type:'blank'},
+    { type:'prompt',  text:'加载毕业回忆...' },
+    { type:'think',   text:'' },
+    { type:'think',   text:'  ⟳ 读取 2022 年记忆...' },
+    { type:'file',    text:'  ✓  freshman-year.md' },
+    { type:'think',   text:'  ⟳ 读取 2023 年记忆...' },
+    { type:'file',    text:'  ✓  exploration.log' },
+    { type:'think',   text:'  ⟳ 读取 2024 年记忆...' },
+    { type:'file',    text:'  ✓  breakthrough.json' },
+    { type:'think',   text:'  ⟳ 读取 2026 年记忆...' },
+    { type:'file',    text:'  ✓  graduation.md' },
+    { type:'blank' },
     { type:'success', text:'  Done — 4 年回忆加载完毕。' },
   ];
   let i = 0;
@@ -957,7 +1229,7 @@ footer {
     else if (l.type === 'prompt') el.innerHTML = '<span class="t-prompt"></span>' + l.text;
     else if (l.type === 'think')  el.innerHTML = '<span class="t-think">' + l.text + '</span>';
     else if (l.type === 'file')   el.innerHTML = '<span class="t-file">' + l.text + '</span>';
-    else if (l.type === 'success') el.innerHTML = '<span class="t-success">' + l.text + '</span>';
+    else if (l.type === 'success')el.innerHTML = '<span class="t-success">' + l.text + '</span>';
     else el.innerHTML = '<span class="t-dim">' + l.text + '</span>';
     box.appendChild(el);
     requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
@@ -969,18 +1241,7 @@ footer {
 })();
 
 // ============================================
-// Scroll Reveal
-// ============================================
-(function(){
-  const reveals = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(el => obs.observe(el));
-})();
-
-// ============================================
-// Progress bar
+// PROGRESS BAR
 // ============================================
 (function(){
   const bar = document.getElementById('progress');
@@ -991,7 +1252,25 @@ footer {
 })();
 
 // ============================================
-// Nav active dot
+// SCROLL REVEAL
+// ============================================
+(function(){
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Showcase staggered
+  const showcase = document.getElementById('showcaseOpening');
+  if (showcase) {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }).observe(showcase);
+  }
+})();
+
+// ============================================
+// NAV ACTIVE
 // ============================================
 (function(){
   const links = document.querySelectorAll('.nav-links a');
@@ -1004,42 +1283,108 @@ footer {
   window.addEventListener('scroll', () => {
     const y = window.scrollY + window.innerHeight / 3;
     sections.forEach(({ el, link }) => {
-      if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
-        links.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      }
+      links.forEach(l => l.classList.remove('active'));
+      if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) link.classList.add('active');
     });
   }, { passive: true });
+  // Smooth anchor scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 })();
 
 // ============================================
-// Stats counter
+// STATS COUNTER
 // ============================================
 (function(){
   const nums = document.querySelectorAll('.stat-num[data-count]');
   const statsSection = document.getElementById('stats');
-  let counted = false;
-  const obs = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !counted) {
-      counted = true;
-      nums.forEach(el => {
-        const target = parseInt(el.getAttribute('data-count'));
-        const duration = 1600;
-        const start = performance.now();
-        function tick(now) {
-          const p = Math.min((now - start) / duration, 1);
-          el.textContent = Math.floor(p * target);
-          if (p < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-      });
-    }
-  }, { threshold: 0.5 });
+  let fired = false;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !fired) {
+        fired = true;
+        obs.disconnect();
+        nums.forEach(el => {
+          if (el.dataset.static) { el.textContent = el.dataset.static; return; }
+          const target = parseInt(el.dataset.count, 10);
+          if (isNaN(target) || target === 0) return;
+          let current = 0;
+          const step = Math.max(1, Math.ceil(target / 40));
+          const id = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(id); }
+            el.textContent = current;
+          }, 30);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
   if (statsSection) obs.observe(statsSection);
 })();
 
 // ============================================
-// Lightbox
+// BUTTON RIPPLE
+// ============================================
+document.querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+// ============================================
+// GLOW CURSOR BALL
+// ============================================
+(function(){
+  if ('ontouchstart' in window) return;
+  const ball = document.getElementById('cursorBall');
+  if (!ball) return;
+
+  const c = { core: '#F5A623', glow: 'rgba(245,166,35,' };
+  ball.style.background = `radial-gradient(circle, ${c.core}99 0%, ${c.glow}0.15) 50%, transparent 70%)`;
+  ball.style.boxShadow = `0 0 20px ${c.glow}0.4), 0 0 40px ${c.glow}0.15)`;
+
+  let mx = -100, my = -100, bx = -100, by = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  const hoverSel = 'a, button, .btn, .card, .tl-card, .photo-item, .thanks-tag, .showcase-terminal';
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest(hoverSel)) ball.classList.add('hover');
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest(hoverSel)) ball.classList.remove('hover');
+  });
+
+  // h1/h2/h3 color tint
+  document.querySelectorAll('h1, h2, h3').forEach(h => {
+    h.addEventListener('mouseenter', () => { h.style.color = c.core; });
+    h.addEventListener('mouseleave', () => { h.style.color = ''; });
+  });
+
+  function tick() {
+    bx += (mx - bx) * 0.1;
+    by += (my - by) * 0.1;
+    ball.style.left = bx + 'px';
+    ball.style.top = by + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// ============================================
+// LIGHTBOX
 // ============================================
 const photos = [
   '微信图片_20260618163410_594_2.jpg',
@@ -1049,9 +1394,9 @@ const photos = [
   '微信图片_20260618163419_599_2.jpg',
   '微信图片_20260618164104_600_2.jpg',
 ];
-let idx = 0;
+let lbIdx = 0;
 function openLightbox(i) {
-  idx = i;
+  lbIdx = i;
   document.getElementById('lightboxImg').src = photos[i];
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1061,12 +1406,12 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 function prevPhoto() {
-  idx = (idx - 1 + photos.length) % photos.length;
-  document.getElementById('lightboxImg').src = photos[idx];
+  lbIdx = (lbIdx - 1 + photos.length) % photos.length;
+  document.getElementById('lightboxImg').src = photos[lbIdx];
 }
 function nextPhoto() {
-  idx = (idx + 1) % photos.length;
-  document.getElementById('lightboxImg').src = photos[idx];
+  lbIdx = (lbIdx + 1) % photos.length;
+  document.getElementById('lightboxImg').src = photos[lbIdx];
 }
 document.addEventListener('keydown', (e) => {
   const lb = document.getElementById('lightbox');
@@ -1077,35 +1422,26 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ============================================
-// Glow Cursor Ball
+// EDIT MODE — 连点3次左上角 🎓 图标开关
 // ============================================
 (function(){
-  const ball = document.getElementById('cursorBall');
-  if (!ball) return;
-  let mouseX = 0, mouseY = 0;
-  let ballX = 0, ballY = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  }, { passive: true });
-
-  // Smooth follow animation
-  function animate() {
-    const speed = 0.12;
-    ballX += (mouseX - ballX) * speed;
-    ballY += (mouseY - ballY) * speed;
-    ball.style.left = ballX + 'px';
-    ball.style.top = ballY + 'px';
-    requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-
-  // Enlarge on hover over links/buttons/cards
-  const hoverTargets = document.querySelectorAll('a, button, .btn, .card, .photo-item, .thanks-tag, .tl-card, .lightbox-prev, .lightbox-next');
-  hoverTargets.forEach(el => {
-    el.addEventListener('mouseenter', () => ball.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ball.classList.remove('hover'));
+  const trigger = document.getElementById('navLogo');
+  let clicks = 0;
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    clicks++;
+    if (clicks >= 3) {
+      clicks = 0;
+      document.body.classList.toggle('editing');
+      if (!document.body.classList.contains('editing')) {
+        document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+      } else {
+        document.querySelectorAll('[data-editable]').forEach(el => {
+          el.setAttribute('contenteditable', 'true');
+        });
+      }
+    }
+    setTimeout(() => { clicks = 0; }, 1200);
   });
 })();
 </script>
