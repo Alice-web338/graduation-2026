@@ -3,865 +3,685 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>毕业总结 · 纸墨书香</title>
+<title>毕业纪念 · 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:opsz,wght@8..60,200;8..60,300;8..60,400;8..60,500;8..60,600&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ===========================================
-   CSS CUSTOM PROPERTIES — 纸墨书香
-   =========================================== */
+/* ===== 颜色变量 ===== */
 :root {
-    --bg-outer: #1a1a1a;
-    --bg-page: #faf9f7;
-    --text-primary: #1a1a1a;
-    --text-secondary: #5c5956;
-    --text-muted: #9a9590;
-    --accent-crimson: #c41e3a;
-    --accent-crimson-light: rgba(196, 30, 58, 0.10);
-    --line-color: #d4cfc8;
-    --line-light: #e8e4df;
-
-    --font-display: 'Cormorant Garamond', 'Noto Serif SC', serif;
-    --font-body: 'Source Serif 4', 'Noto Serif SC', serif;
-    --font-cjk: 'Noto Serif SC', serif;
-
-    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --bg: #f8faf7;
+    --white: #ffffff;
+    --green: #5b8c6f;
+    --green-light: #e8f0ea;
+    --green-dark: #3d6349;
+    --text: #2c2c2c;
+    --text-light: #6b7280;
+    --text-lighter: #9ca3af;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --radius: 12px;
+    --max-width: 960px;
 }
 
-/* ===========================================
-   FIXED 16:9 STAGE
-   =========================================== */
-html, body {
-    width: 100%; height: 100%;
-    margin: 0; overflow: hidden;
-    background: var(--bg-outer);
-}
-.deck-viewport {
-    position: fixed; inset: 0;
-    overflow: hidden; background: var(--bg-outer);
-}
-.deck-stage {
-    position: absolute; left: 0; top: 0;
-    width: 1920px; height: 1080px;
-    overflow: hidden; transform-origin: 0 0;
-    background: var(--bg-page);
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* 每张 slide 占满舞台，仅 active 可见 */
-.slide {
-    position: absolute;
-    inset: 0;
-    width: 1920px;
-    height: 1080px;
-    overflow: hidden;
-    display: block;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    background: var(--bg-page);
-}
-.slide.active {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 1;
-}
+html { scroll-behavior: smooth; }
 
-/* 每页内容容器 — 使用 padding 而非子元素全部 absolute */
-.slide-inner {
-    width: 100%; height: 100%;
-    padding: 100px 120px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-img, video, canvas, svg { max-width: 100%; max-height: 100%; }
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.2s !important;
-    }
-}
-@media print {
-    html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
-    .deck-viewport { position: static; overflow: visible; background: #fff; }
-    .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
-    .slide {
-        position: relative; display: block !important;
-        visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
-        width: 1920px; height: 1080px;
-        break-after: page; page-break-after: always;
-    }
-    .slide:last-child { break-after: auto; page-break-after: auto; }
-    .edit-bar, .deck-nav-hint { display: none !important; }
-}
-
-/* ===========================================
-   动画系统
-   =========================================== */
-.reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s var(--ease-out-expo),
-                transform 0.7s var(--ease-out-expo);
-}
-.slide.active .reveal { opacity: 1; transform: translateY(0); }
-
-.reveal-scale {
-    opacity: 0; transform: scale(0.94);
-    transition: opacity 0.7s var(--ease-out-expo),
-                transform 0.7s var(--ease-out-expo);
-}
-.slide.active .reveal-scale { opacity: 1; transform: scale(1); }
-
-/* 列表项错开入场 */
-.stagger > * {
-    opacity: 0; transform: translateY(16px);
-}
-.slide.active .stagger > *:nth-child(1) { transition: all 0.5s 0.10s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(2) { transition: all 0.5s 0.22s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(3) { transition: all 0.5s 0.34s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(4) { transition: all 0.5s 0.46s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(5) { transition: all 0.5s 0.58s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(6) { transition: all 0.5s 0.70s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(7) { transition: all 0.5s 0.82s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-.slide.active .stagger > *:nth-child(8) { transition: all 0.5s 0.94s var(--ease-out-expo); opacity:1; transform: translateY(0); }
-
-/* ===========================================
-   通用文字样式
-   =========================================== */
-.slide-kicker {
-    font-family: var(--font-display);
-    font-size: 16px; font-weight: 500;
-    letter-spacing: 0.18em;
-    color: var(--accent-crimson);
-    text-transform: uppercase;
-    margin: 0 0 8px 0;
-}
-.slide-heading {
-    font-family: var(--font-cjk);
-    font-size: 68px; font-weight: 600;
-    line-height: 1.2;
-    color: var(--text-primary);
-    margin: 0 0 28px 0;
-}
-.slide-body {
-    font-family: var(--font-body);
-    font-size: 22px; font-weight: 300;
+body {
+    font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
     line-height: 1.7;
-    color: var(--text-secondary);
-    margin: 0; max-width: 680px;
+    -webkit-font-smoothing: antialiased;
 }
-.accent-rule {
-    width: 72px; height: 2px;
-    background: var(--accent-crimson);
-    margin: 32px 0 0 0;
-    border: none;
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.5s var(--ease-out-expo);
-}
-.slide.active .accent-rule { transform: scaleX(1); transition-delay: 0.7s; }
 
-/* ===========================================
-   SLIDE 1: 封面
-   =========================================== */
-.slide-cover { align-items: flex-start; justify-content: center; position: relative; }
-.cover-top-rule {
-    position: absolute; top: 100px; left: 120px; right: 120px;
-    height: 2px; background: var(--accent-crimson);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.8s 0.2s var(--ease-out-expo);
+/* ===== 顶部导航 ===== */
+.nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
 }
-.slide.active .cover-top-rule { transform: scaleX(1); }
+.nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; height: 56px;
+}
+.nav-logo {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px; font-weight: 600;
+    color: var(--green-dark);
+    letter-spacing: 0.04em;
+}
+.nav-links {
+    display: flex; gap: 4px;
+    list-style: none;
+}
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 14px; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px;
+    transition: all 0.2s;
+}
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--green-dark);
+    background: var(--green-light);
+}
+.nav-mobile-toggle {
+    display: none;
+    background: none; border: none;
+    font-size: 24px; cursor: pointer;
+    color: var(--text);
+    padding: 4px;
+}
 
-.cover-year {
-    font-family: var(--font-display);
-    font-size: 20px; font-style: italic;
-    color: var(--text-secondary);
-    letter-spacing: 0.08em;
-    margin: 0 0 40px 0;
+/* ===== 页面容器 ===== */
+.page {
+    display: none;
+    padding-top: 56px;
 }
-.cover-title {
-    font-family: var(--font-cjk);
-    font-size: 140px; font-weight: 600;
-    line-height: 0.92; color: var(--text-primary);
-    margin: 0 0 24px -4px;
+.page.active { display: block; }
+
+.page-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+}
+
+/* ===== 首页 Hero ===== */
+.hero {
+    text-align: center;
+    padding: 120px 24px 80px;
+}
+.hero-badge {
+    display: inline-block;
+    font-size: 13px; font-weight: 500;
+    color: var(--green-dark);
+    background: var(--green-light);
+    padding: 6px 18px; border-radius: 20px;
     letter-spacing: 0.06em;
+    margin-bottom: 32px;
 }
-.cover-subtitle {
-    font-family: var(--font-body);
-    font-size: 22px; font-weight: 300;
-    line-height: 1.6; color: var(--text-secondary);
-    margin: 0; max-width: 560px;
+.hero h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 56px; font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 20px;
 }
-.cover-big-year {
-    position: absolute; right: 140px; bottom: 200px;
-    font-family: var(--font-display);
-    font-size: 200px; font-weight: 500;
-    line-height: 0.8; color: var(--accent-crimson-light);
-    letter-spacing: -0.02em;
-    pointer-events: none;
+.hero h1 .highlight {
+    color: var(--green);
 }
-.cover-vertical {
-    position: absolute; top: 100px; right: 160px; bottom: 100px;
-    width: 1px; background: var(--line-light);
-    transform: scaleY(0); transform-origin: top;
-    transition: transform 0.6s 0.6s var(--ease-out-expo);
+.hero p {
+    font-size: 18px; color: var(--text-light);
+    max-width: 500px; margin: 0 auto 40px;
+    line-height: 1.7;
 }
-.slide.active .cover-vertical { transform: scaleY(1); }
-.cover-bottom-dot {
-    position: absolute; bottom: 100px; left: 120px;
-    display: flex; align-items: center; gap: 16px;
+.hero-actions {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
 }
-.cover-dot-line { width: 80px; height: 1px; background: var(--line-color); }
-.cover-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-crimson); }
-.page-num {
-    position: absolute; bottom: 100px; right: 120px;
-    font-family: var(--font-display);
-    font-size: 18px; font-style: italic;
-    color: var(--text-muted);
+.btn {
+    display: inline-block;
+    font-family: inherit;
+    font-size: 15px; font-weight: 500;
+    padding: 12px 28px; border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+.btn-primary {
+    background: var(--green);
+    color: #fff;
+}
+.btn-primary:hover {
+    background: var(--green-dark);
+}
+.btn-outline {
+    background: var(--white);
+    color: var(--green-dark);
+    border: 1px solid var(--border);
+}
+.btn-outline:hover {
+    border-color: var(--green);
+    background: var(--green-light);
 }
 
-/* ===========================================
-   SLIDE 2: 时光印记（时间线）
-   =========================================== */
-.timeline-wrap {
-    width: 100%; max-width: 1640px;
+/* ===== 通用区块标题 ===== */
+.section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 32px; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
 }
-.timeline-line {
-    width: 100%; height: 1px;
-    background: var(--line-color);
-    margin: 16px 0 50px 0;
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.7s 0.4s var(--ease-out-expo);
+.section-subtitle {
+    font-size: 15px; color: var(--text-light);
+    margin-bottom: 40px;
 }
-.slide.active .timeline-line { transform: scaleX(1); }
-.timeline-items {
-    display: flex; gap: 56px;
+
+/* ===== 关于我 ===== */
+.about-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+}
+.about-avatar {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 64px; color: var(--green);
+    margin: 0 auto;
+}
+.about-list {
+    list-style: none;
+    display: grid; gap: 16px;
+}
+.about-list li {
+    display: flex; gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+.about-label {
+    font-size: 13px; font-weight: 500;
+    color: var(--text-lighter);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    width: 80px; flex-shrink: 0;
+    padding-top: 2px;
+}
+.about-value {
+    font-size: 16px; color: var(--text);
+}
+
+/* ===== 时间线 ===== */
+.timeline {
+    position: relative;
+    padding-left: 32px;
+}
+.timeline::before {
+    content: '';
+    position: absolute; left: 8px; top: 0; bottom: 0;
+    width: 2px; background: var(--green-light);
 }
 .timeline-item {
-    flex: 1; min-width: 0;
+    position: relative;
+    margin-bottom: 40px;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute; left: -28px; top: 6px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 3px solid var(--bg);
 }
 .timeline-year {
-    font-family: var(--font-display);
-    font-size: 44px; font-weight: 600;
-    color: var(--accent-crimson);
-    margin: 0 0 4px 0;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px; font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
 }
-.timeline-title {
-    font-family: var(--font-cjk);
-    font-size: 26px; font-weight: 500;
-    color: var(--text-primary);
-    margin: 0 0 10px 0;
+.timeline-item h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
 }
-.timeline-desc {
-    font-family: var(--font-body);
-    font-size: 17px; font-weight: 300;
-    line-height: 1.55; color: var(--text-secondary);
-    margin: 0;
-}
-
-/* ===========================================
-   SLIDE 3-5: 内容页（左文右数字）
-   =========================================== */
-.content-split {
-    display: flex; align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
-}
-.content-left-col { max-width: 640px; }
-.content-right-big {
-    font-family: var(--font-display);
-    font-size: 300px; font-weight: 600;
-    line-height: 1; color: var(--accent-crimson-light);
-    letter-spacing: -0.04em;
-    pointer-events: none;
-    margin-right: 60px;
+.timeline-item p {
+    font-size: 15px; color: var(--text-light);
+    line-height: 1.7;
 }
 
-/* key-value 数字块 */
-.stat-row {
-    display: flex; gap: 80px;
-    margin-top: 40px;
-}
-.stat-item {
-    display: flex; flex-direction: column;
-}
-.stat-num {
-    font-family: var(--font-display);
-    font-size: 48px; font-weight: 600;
-    color: var(--accent-crimson);
-    line-height: 1;
-}
-.stat-label {
-    font-family: var(--font-cjk);
-    font-size: 20px; font-weight: 500;
-    color: var(--text-primary);
-    margin-top: 6px;
-}
-.stat-note {
-    font-family: var(--font-body);
-    font-size: 15px; font-weight: 300;
-    color: var(--text-muted);
-    margin-top: 4px;
-}
-
-/* ===========================================
-   SLIDE 4: 课程卡片
-   =========================================== */
-.course-cards {
-    display: flex; gap: 28px;
-    margin-top: 20px;
-}
-.course-card {
-    flex: 1;
-    border: 1px solid var(--line-light);
-    padding: 32px 28px;
-    position: relative;
-    background: var(--bg-page);
-}
-.course-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; background: var(--accent-crimson);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.5s var(--ease-out-expo);
-}
-.slide.active .course-card:nth-child(1)::before { transform: scaleX(1); transition-delay: 0.6s; }
-.slide.active .course-card:nth-child(2)::before { transform: scaleX(1); transition-delay: 0.8s; }
-.slide.active .course-card:nth-child(3)::before { transform: scaleX(1); transition-delay: 1.0s; }
-.course-icon {
-    font-family: var(--font-display);
-    font-size: 36px; font-weight: 600;
-    color: var(--accent-crimson);
-    margin: 0 0 12px 0;
-}
-.course-title {
-    font-family: var(--font-cjk);
-    font-size: 22px; font-weight: 500;
-    color: var(--text-primary);
-    margin: 0 0 8px 0;
-}
-.course-desc {
-    font-family: var(--font-body);
-    font-size: 16px; font-weight: 300;
-    line-height: 1.5; color: var(--text-secondary);
-    margin: 0;
-}
-
-/* ===========================================
-   SLIDE 6: 金句
-   =========================================== */
-.quote-wrap {
-    width: 100%; max-width: 1320px;
-}
-.quote-mark {
-    font-family: var(--font-display);
-    font-size: 180px; font-weight: 600;
-    line-height: 0.6; color: var(--accent-crimson-light);
-    margin: 0 0 -20px 0;
-}
-.quote-text {
-    font-family: var(--font-cjk);
-    font-size: 40px; font-weight: 500;
-    line-height: 1.55; color: var(--text-primary);
-    margin: 0 0 20px 0;
-}
-.quote-author {
-    font-family: var(--font-body);
-    font-size: 20px; font-weight: 300;
-    font-style: italic; color: var(--text-secondary);
-    margin: 0;
-}
-
-/* ===========================================
-   SLIDE 7: 珍贵瞬间 — 照片展示
-   =========================================== */
-.photo-grid {
+/* ===== 相册 ===== */
+.gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 12px;
-    width: 100%;
+    gap: 16px;
 }
-.photo-card {
+.gallery-item {
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    position: relative;
+    border-radius: var(--radius);
+    background: var(--green-light);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
-/* 照片占位框：在你没有放照片时显示提示 */
-.photo-placeholder {
+.gallery-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+}
+.gallery-item img {
     width: 100%; height: 100%;
-    border: 1px dashed var(--line-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: rgba(0,0,0,0.02);
-    transition: border-color 0.3s, background 0.3s;
-}
-.photo-placeholder:hover {
-    border-color: var(--accent-crimson);
-    background: rgba(196,30,58,0.03);
-}
-.photo-icon {
-    font-size: 40px;
-    opacity: 0.35;
-}
-.photo-label {
-    font-family: var(--font-cjk);
-    font-size: 16px; font-weight: 400;
-    color: var(--text-muted);
-}
-.photo-hint {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--line-color);
-    background: rgba(0,0,0,0.04);
-    padding: 3px 10px; border-radius: 3px;
-}
-/* ★ 你放入真实照片后，照片会自动填满卡片 */
-.photo-card img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     display: block;
 }
-
-/* ===========================================
-   SLIDE 8: 尾声
-   =========================================== */
-.future-heading {
-    font-family: var(--font-cjk);
-    font-size: 80px; font-weight: 600;
-    line-height: 1.15; color: var(--text-primary);
-    margin: 0 0 20px 0;
-}
-.future-big {
-    position: absolute; right: 140px; bottom: 200px;
-    font-family: var(--font-display);
-    font-size: 240px; font-weight: 500;
-    line-height: 0.8; color: var(--accent-crimson-light);
-    pointer-events: none;
-}
-.future-end {
-    position: absolute; bottom: 140px; right: 160px;
-    font-family: var(--font-display);
-    font-size: 24px; font-weight: 500;
-    font-style: italic; color: var(--text-muted);
-}
-
-/* ===========================================
-   编辑栏 — 始终可见
-   =========================================== */
-.edit-bar {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 48px;
-    background: rgba(26,26,26,0.92);
-    display: flex; align-items: center;
-    gap: 12px; padding: 0 16px;
-    z-index: 10000;
-    font-family: var(--font-body);
-}
-.edit-btn {
-    font-size: 14px; color: #fff;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 16px; border-radius: 4px;
+/* 灯箱 */
+.lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 9999;
+    align-items: center; justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+    max-width: 90vw; max-height: 85vh;
+    border-radius: 8px;
+    object-fit: contain;
+}
+.lightbox-close {
+    position: absolute; top: 20px; right: 30px;
+    font-size: 36px; color: #fff;
+    cursor: pointer;
+    background: none; border: none;
     font-family: inherit;
 }
-.edit-btn:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.6);
+.lightbox-prev, .lightbox-next {
+    position: absolute; top: 50%;
+    font-size: 36px; color: #fff;
+    background: rgba(255,255,255,0.15);
+    border: none; border-radius: 50%;
+    width: 48px; height: 48px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background 0.2s;
 }
-.edit-btn.active {
-    background: var(--accent-crimson);
-    border-color: var(--accent-crimson);
+.lightbox-prev:hover, .lightbox-next:hover {
+    background: rgba(255,255,255,0.3);
 }
-.edit-hint {
-    font-size: 12px; color: rgba(255,255,255,0.4);
-    margin-left: auto;
+.lightbox-prev { left: 30px; }
+.lightbox-next { right: 30px; }
+
+/* ===== 致谢 ===== */
+.thanks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
 }
-.deck-nav-hint {
-    position: fixed; bottom: 16px; right: 20px;
-    font-family: var(--font-body);
-    font-size: 12px; color: rgba(255,255,255,0.25);
-    z-index: 9999; pointer-events: none;
+.thanks-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.thanks-card:hover {
+    border-color: var(--green);
+    box-shadow: var(--shadow);
+}
+.thanks-icon {
+    font-size: 28px; margin-bottom: 12px;
+}
+.thanks-card h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px; font-weight: 500;
+    color: var(--text);
+}
+.thanks-card span {
+    font-size: 13px; color: var(--text-lighter);
 }
 
-/* 编辑模式下可编辑元素的样式 */
-.editing [data-editable] {
-    outline: 2px dashed var(--accent-crimson);
-    outline-offset: 2px;
-    cursor: text;
+/* ===== 页脚 ===== */
+.footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-lighter);
+    font-size: 13px;
 }
-.editing [data-editable]:focus {
-    outline-style: solid;
-    outline-color: var(--accent-crimson);
-    background: rgba(196, 30, 58, 0.03);
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .nav-mobile-toggle { display: block; }
+    .nav-links {
+        display: none;
+        position: absolute; top: 56px; left: 0; right: 0;
+        background: rgba(255,255,255,0.98);
+        flex-direction: column;
+        padding: 12px 24px; gap: 2px;
+        border-bottom: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .hero h1 { font-size: 36px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .thanks-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .hero h1 { font-size: 28px; }
+    .gallery { grid-template-columns: 1fr; }
+    .thanks-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- 编辑工具栏 — 始终可见，点击即可编辑 -->
-<div class="edit-bar">
-    <button class="edit-btn" id="editBtn" onclick="toggleEdit()">✏️ 编辑文字</button>
-    <button class="edit-btn" id="saveBtn" onclick="saveToFile()" style="display:none">💾 下载 HTML</button>
-    <span class="edit-hint">← → 翻页 &nbsp;|&nbsp; 点击「编辑文字」后直接点击页面上你想改的文字</span>
+<!-- ===== 导航栏 ===== -->
+<nav class="nav">
+    <div class="nav-inner">
+        <span class="nav-logo">🎓 2026 毕业纪念</span>
+        <button class="nav-mobile-toggle" id="menuBtn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" data-page="home" class="active" onclick="showPage('home')">首页</a></li>
+            <li><a href="#about" data-page="about" onclick="showPage('about')">关于我</a></li>
+            <li><a href="#journey" data-page="journey" onclick="showPage('journey')">大学时光</a></li>
+            <li><a href="#gallery" data-page="gallery" onclick="showPage('gallery')">珍贵相册</a></li>
+            <li><a href="#thanks" data-page="thanks" onclick="showPage('thanks')">致谢</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== 首页 ===== -->
+<section class="page active" id="page-home">
+    <div class="hero">
+        <div class="hero-badge">🎓 Class of 2026</div>
+        <h1>四年青春<span class="highlight">，</span><br>从这里再出发</h1>
+        <p>无论走多远，这段时光永远是我最宝贵的行囊。</p>
+        <div class="hero-actions">
+            <a href="#about" class="btn btn-primary" onclick="showPage('about')">了解更多</a>
+            <a href="#gallery" class="btn btn-outline" onclick="showPage('gallery')">看看相册</a>
+        </div>
+    </div>
+
+    <div class="page-inner" style="padding-top:0; padding-bottom:60px">
+        <div class="about-grid">
+            <div class="about-avatar">🎓</div>
+            <div>
+                <h2 class="section-title">嗨，你好</h2>
+                <p class="section-subtitle">欢迎来到我的毕业纪念网站</p>
+                <p style="font-size:16px; color:var(--text-light); line-height:1.8;">
+                    这里是承载我四年大学生活的地方。<br>
+                    从2022到2026，从青涩到从容——<br>
+                    每一段经历、每一个遇见的人，<br>
+                    都构成了今天的我。<br><br>
+                    点开导航栏，一起回顾这段旅程。
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 关于我 ===== -->
+<section class="page" id="page-about">
+    <div class="page-inner">
+        <h2 class="section-title">关于我</h2>
+        <p class="section-subtitle">一个普通大学生的四年</p>
+
+        <div class="about-grid">
+            <div class="about-avatar">📚</div>
+            <ul class="about-list">
+                <li>
+                    <span class="about-label">姓名</span>
+                    <span class="about-value" data-editable>点击这里改成你的名字</span>
+                </li>
+                <li>
+                    <span class="about-label">学校</span>
+                    <span class="about-value" data-editable>你的大学名称</span>
+                </li>
+                <li>
+                    <span class="about-label">专业</span>
+                    <span class="about-value" data-editable>你的专业</span>
+                </li>
+                <li>
+                    <span class="about-label">毕业时间</span>
+                    <span class="about-value">2026 年 6 月</span>
+                </li>
+                <li>
+                    <span class="about-label">兴趣</span>
+                    <span class="about-value" data-editable>阅读 · 摄影 · 旅行 · 代码</span>
+                </li>
+            </ul>
+        </div>
+
+        <div style="margin-top:48px">
+            <h2 class="section-title">毕业感言</h2>
+            <p class="section-subtitle">写给自己的一段话</p>
+            <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:32px;">
+                <p style="font-family:'Noto Serif SC',serif; font-size:18px; line-height:1.9; color:var(--text);" data-editable>
+                    四年前，我带着忐忑和好奇走进了大学校园。<br>
+                    四年后，我带着满满的回忆和成长离开。<br><br>
+                    大学教给我最重要的不是知识本身，<br>
+                    而是面对未知时不再害怕的勇气。<br>
+                    感谢每一个出现在我生命中的人，<br>
+                    你们让这一段时光闪闪发光。
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 大学时光 ===== -->
+<section class="page" id="page-journey">
+    <div class="page-inner">
+        <h2 class="section-title">大学时光</h2>
+        <p class="section-subtitle">从入学到毕业，四个春夏秋冬</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2022 年</div>
+                <h3>🎒 初识 · 新鲜</h3>
+                <p>拖着大大的行李箱走进校园，一切都陌生又让人兴奋。第一次班会、第一次去图书馆、第一次通宵赶作业……那些「第一次」，现在想起来还是会笑。</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023 年</div>
+                <h3>📖 沉淀 · 探索</h3>
+                <p>课业渐渐深入，也开始尝试各种可能。加入社团、参加比赛、做项目、写论文——在忙碌中，慢慢发现了自己真正喜欢的方向。</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2024 年</div>
+                <h3>🚀 突破 · 成长</h3>
+                <p>关键的一年。实习让我看到了校园外的世界，竞赛和科研让能力得到检验。也开始认真思考：毕业之后，去哪里？做什么？成为什么样的人？</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2026 年</div>
+                <h3>🎓 告别 · 再出发</h3>
+                <p>穿上学位服的那个瞬间，四年的画面像电影一样闪过。四年不是一个句号，而是一个冒号——带着所有的回忆与成长，去往更远的地方。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 珍贵相册 ===== -->
+<section class="page" id="page-gallery">
+    <div class="page-inner">
+        <h2 class="section-title">珍贵相册</h2>
+        <p class="section-subtitle">定格那些回不去的瞬间</p>
+
+        <div class="gallery">
+            <div class="gallery-item" onclick="openLightbox(0)">
+                <img src="微信图片_20260618163410_594_2.jpg" alt="珍贵瞬间1">
+            </div>
+            <div class="gallery-item" onclick="openLightbox(1)">
+                <img src="微信图片_20260618163412_595_2.jpg" alt="珍贵瞬间2">
+            </div>
+            <div class="gallery-item" onclick="openLightbox(2)">
+                <img src="微信图片_20260618163414_597_2.jpg" alt="珍贵瞬间3">
+            </div>
+            <div class="gallery-item" onclick="openLightbox(3)">
+                <img src="微信图片_20260618163417_598_2.jpg" alt="珍贵瞬间4">
+            </div>
+            <div class="gallery-item" onclick="openLightbox(4)">
+                <img src="微信图片_20260618163419_599_2.jpg" alt="珍贵瞬间5">
+            </div>
+            <div class="gallery-item" onclick="openLightbox(5)">
+                <img src="微信图片_20260618164104_600_2.jpg" alt="珍贵瞬间6">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 致谢 ===== -->
+<section class="page" id="page-thanks">
+    <div class="page-inner">
+        <h2 class="section-title">致谢</h2>
+        <p class="section-subtitle">感谢每一个让这四年变得特别的人</p>
+
+        <div class="thanks-grid">
+            <div class="thanks-card">
+                <div class="thanks-icon">🏠</div>
+                <h4>亲爱的室友们</h4>
+                <span>一起熬夜赶作业、一起聊到天亮</span>
+            </div>
+            <div class="thanks-card">
+                <div class="thanks-icon">👨‍🏫</div>
+                <h4>耐心指导的导师</h4>
+                <span>在迷茫时为我指明方向</span>
+            </div>
+            <div class="thanks-card">
+                <div class="thanks-icon">🤝</div>
+                <h4>一起奋斗的队友</h4>
+                <span>竞赛、项目中肩并肩成长</span>
+            </div>
+            <div class="thanks-card">
+                <div class="thanks-icon">❤️</div>
+                <h4>永远支持的家人</h4>
+                <span>让我可以安心追逐梦想</span>
+            </div>
+            <div class="thanks-card">
+                <div class="thanks-icon">☕</div>
+                <h4>相伴成长的朋友们</h4>
+                <span>每一个深夜，每一次谈心</span>
+            </div>
+            <div class="thanks-card">
+                <div class="thanks-icon">🌿</div>
+                <h4>这所美丽的校园</h4>
+                <span>承载了四年最美好的回忆</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 灯箱 ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); prevPhoto()">‹</button>
+    <button class="lightbox-next" onclick="event.stopPropagation(); nextPhoto()">›</button>
+    <img src="" alt="" id="lightboxImg">
 </div>
-<div class="deck-nav-hint">← → 方向键 / 鼠标滚轮 / 触屏滑动 翻页</div>
 
-<div class="deck-viewport">
-    <main class="deck-stage" id="deckStage">
-
-        <!-- ============ SLIDE 1: 封面 ============ -->
-        <section class="slide active">
-            <div class="slide-inner slide-cover">
-                <div class="cover-top-rule"></div>
-                <p class="cover-year reveal" data-editable>2022 — 2026</p>
-                <p class="slide-kicker reveal" data-editable>Graduation Memoir</p>
-                <h1 class="cover-title reveal" data-editable>毕业总结</h1>
-                <p class="cover-subtitle reveal" style="transition-delay:0.7s" data-editable>四载春秋，从青涩到从容。<br>谨以此，致谢每一段成长与相遇。</p>
-                <hr class="accent-rule" style="margin-left:0">
-                <div class="cover-big-year reveal-scale">2026</div>
-                <div class="cover-vertical"></div>
-                <div class="cover-bottom-dot reveal" style="transition-delay:1.4s">
-                    <div class="cover-dot-line"></div>
-                    <div class="cover-dot"></div>
-                    <div class="cover-dot-line"></div>
-                </div>
-                <span class="page-num">1 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 2: 时光印记 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>02 · Timeline</p>
-                <h2 class="slide-heading reveal" data-editable>时光印记</h2>
-                <div class="timeline-wrap">
-                    <div class="timeline-line"></div>
-                    <div class="timeline-items stagger">
-                        <div class="timeline-item">
-                            <p class="timeline-year" data-editable>2022</p>
-                            <p class="timeline-title" data-editable>初识</p>
-                            <p class="timeline-desc" data-editable>怀揣梦想踏入校园，一切都陌生又新鲜。第一次走进图书馆，第一次通宵赶作业。</p>
-                        </div>
-                        <div class="timeline-item">
-                            <p class="timeline-year" data-editable>2023</p>
-                            <p class="timeline-title" data-editable>沉淀</p>
-                            <p class="timeline-desc" data-editable>课业渐深，方向渐明。在做项目、写论文中，找到了自己真正热爱的东西。</p>
-                        </div>
-                        <div class="timeline-item">
-                            <p class="timeline-year" data-editable>2024</p>
-                            <p class="timeline-title" data-editable>突破</p>
-                            <p class="timeline-desc" data-editable>关键的一年。实习、竞赛、科研都有了突破。开始认真思考未来的方向。</p>
-                        </div>
-                        <div class="timeline-item">
-                            <p class="timeline-year" data-editable>2026</p>
-                            <p class="timeline-title" data-editable>告别</p>
-                            <p class="timeline-desc" data-editable>穿上学位服，走过校园每个角落。带着四年的积累，走向下一段旅程。</p>
-                        </div>
-                    </div>
-                </div>
-                <span class="page-num">2 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 3: 青涩的开场 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>03 · Chapter One</p>
-                <div class="content-split">
-                    <div class="content-left-col">
-                        <h2 class="slide-heading reveal" data-editable>青涩的开场</h2>
-                        <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>还记得报到那天拖着行李箱在人海中找宿舍，第一次班会上自我介绍时的心跳加速……<br><br>那一年，世界很大，我们很小。也正是那份「无知者无畏」，让后来的每一步都变得可能。</p>
-                        <hr class="accent-rule">
-                        <div class="stat-row stagger">
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>18</span>
-                                <span class="stat-label" data-editable>岁 · 启程</span>
-                                <span class="stat-note" data-editable>一个人来到新城市</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>4</span>
-                                <span class="stat-label" data-editable>人 · 室友</span>
-                                <span class="stat-note" data-editable>来自天南海北</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>∞</span>
-                                <span class="stat-label" data-editable>好奇心</span>
-                                <span class="stat-note" data-editable>对一切跃跃欲试</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <span class="page-num">3 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 4: 学海探索 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>04 · Knowledge</p>
-                <h2 class="slide-heading reveal" data-editable>学海探索</h2>
-                <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>从基础课到专业课，从课堂到实验室。学的不只是知识，更是如何学习、如何思考、如何解决问题。</p>
-                <div class="course-cards stagger">
-                    <div class="course-card">
-                        <p class="course-icon" data-editable>A</p>
-                        <p class="course-title" data-editable>专业核心</p>
-                        <p class="course-desc" data-editable>从理论到实践，构建专业能力的基石</p>
-                    </div>
-                    <div class="course-card">
-                        <p class="course-icon" data-editable>B</p>
-                        <p class="course-title" data-editable>项目实战</p>
-                        <p class="course-desc" data-editable>在真实项目中磨炼技能、学会协作</p>
-                    </div>
-                    <div class="course-card">
-                        <p class="course-icon" data-editable>C</p>
-                        <p class="course-title" data-editable>跨界探索</p>
-                        <p class="course-desc" data-editable>选修课打开了看世界的另一扇窗</p>
-                    </div>
-                </div>
-                <span class="page-num">4 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 5: 成长里程碑 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>05 · Milestones</p>
-                <div class="content-split">
-                    <div class="content-left-col">
-                        <h2 class="slide-heading reveal" data-editable>成长里程碑</h2>
-                        <p class="slide-body reveal" style="transition-delay:0.3s" data-editable>每一段认真走过的路，都会在某个时刻被看见。</p>
-                        <hr class="accent-rule">
-                        <div class="stat-row stagger">
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>01</span>
-                                <span class="stat-label" data-editable>奖学金</span>
-                                <span class="stat-note" data-editable>努力被认可的时刻</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>02</span>
-                                <span class="stat-label" data-editable>竞赛获奖</span>
-                                <span class="stat-note" data-editable>团队并肩作战的回忆</span>
-                            </div>
-                        </div>
-                        <div class="stat-row stagger" style="margin-top:32px">
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>03</span>
-                                <span class="stat-label" data-editable>实习经历</span>
-                                <span class="stat-note" data-editable>从校园到职场的第一步</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-num" data-editable>04</span>
-                                <span class="stat-label" data-editable>毕业论文</span>
-                                <span class="stat-note" data-editable>大学最后一份作业</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <span class="page-num">5 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 6: 最深感悟 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>06 · Reflection</p>
-                <div class="quote-wrap">
-                    <p class="quote-mark reveal">"</p>
-                    <p class="quote-text reveal" style="transition-delay:0.4s" data-editable>大学教给我最重要的不是某个知识点，而是面对未知时不再害怕的勇气。四年最宝贵的收获，是学会了如何成为更好的自己。</p>
-                    <hr class="accent-rule">
-                    <p class="quote-author reveal" style="transition-delay:1.0s" data-editable>— 毕业前夕，写于图书馆四楼靠窗的位置</p>
-                </div>
-                <span class="page-num">6 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 7: 珍贵瞬间 — 照片展示页 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>07 · Moments</p>
-                <h2 class="slide-heading reveal" data-editable>珍贵瞬间</h2>
-                <!--
-                ★ 如何加入你自己的照片：
-                1. 把照片文件放到与「毕业总结.html」同一个文件夹里
-                2. 在下面把每个 <img> 的 src="" 改成你的照片文件名
-                   例如：src="毕业照1.jpg"  或  src="宿舍合影.png"
-                3. 照片尺寸会自动适配，建议用横版照片效果最好
-                -->
-                <div class="photo-grid stagger">
-                    <div class="photo-card">
-                        <img src="微信图片_20260618163410_594_2.jpg" alt="珍贵瞬间1" style="display:block">
-                    </div>
-                    <div class="photo-card">
-                        <img src="微信图片_20260618163412_595_2.jpg" alt="珍贵瞬间2" style="display:block">
-                    </div>
-                    <div class="photo-card">
-                        <img src="微信图片_20260618163414_597_2.jpg" alt="珍贵瞬间3" style="display:block">
-                    </div>
-                    <div class="photo-card">
-                        <img src="微信图片_20260618163417_598_2.jpg" alt="珍贵瞬间4" style="display:block">
-                    </div>
-                    <div class="photo-card">
-                        <img src="微信图片_20260618164104_600_2.jpg" alt="珍贵瞬间5" style="display:block">
-                    </div>
-                    <div class="photo-card">
-                        <img src="微信图片_20260618163419_599_2.jpg" alt="珍贵瞬间6" style="display:block">
-                        </div>
-                    </div>
-                </div>
-                <span class="page-num">7 / 8</span>
-            </div>
-        </section>
-
-        <!-- ============ SLIDE 8: 下一站 ============ -->
-        <section class="slide">
-            <div class="slide-inner">
-                <p class="slide-kicker reveal" data-editable>08 · Forward</p>
-                <h2 class="future-heading reveal" data-editable>下一站，<br>更广阔的世界</h2>
-                <p class="slide-body reveal" style="transition-delay:0.4s" data-editable>四年不是一个句号，而是一个冒号。带着所有的回忆与成长，去往更远的地方，成为更好的自己。</p>
-                <hr class="accent-rule">
-                <div class="future-big reveal-scale">∞</div>
-                <p class="future-end reveal" style="transition-delay:1.2s" data-editable>Class of 2026</p>
-                <span class="page-num">8 / 8</span>
-            </div>
-        </section>
-
-    </main>
-</div>
+<!-- ===== 页脚 ===== -->
+<footer class="footer" style="display:none">
+    <p>🎓 Class of 2026 · 毕业快乐</p>
+</footer>
 
 <script>
-// ============================================
-// 幻灯片控制器
-// ============================================
-class SlidePresentation {
-    constructor() {
-        this.slides = document.querySelectorAll('.slide');
-        this.stage = document.getElementById('deckStage');
-        this.current = 0;
-        this.setupScale();
-        this.setupKeys();
-        this.setupWheel();
-        this.setupTouch();
-        this.show(0);
-    }
+// ===== 页面切换 =====
+let currentPage = 'home';
 
-    setupScale() {
-        const resize = () => {
-            const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-            this.stage.style.transform =
-                `translate(${(window.innerWidth - 1920 * s) / 2}px, ${(window.innerHeight - 1080 * s) / 2}px) scale(${s})`;
-        };
-        resize();
-        window.addEventListener('resize', resize);
-    }
+function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const page = document.getElementById('page-' + name);
+    if (page) page.classList.add('active');
 
-    setupKeys() {
-        document.addEventListener('keydown', (e) => {
-            if (document.body.classList.contains('editing') && e.target.hasAttribute('data-editable')) return;
-            switch (e.key) {
-                case 'ArrowRight': case 'ArrowDown': case ' ':
-                    e.preventDefault(); this.next(); break;
-                case 'ArrowLeft': case 'ArrowUp':
-                    e.preventDefault(); this.prev(); break;
-                case 'Home': e.preventDefault(); this.show(0); break;
-                case 'End': e.preventDefault(); this.show(this.slides.length - 1); break;
-            }
-        });
-    }
+    // 更新导航高亮
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const link = document.querySelector(`[data-page="${name}"]`);
+    if (link) link.classList.add('active');
 
-    setupWheel() {
-        let t;
-        document.addEventListener('wheel', (e) => {
-            if (document.body.classList.contains('editing') && e.target.hasAttribute('data-editable')) return;
-            e.preventDefault();
-            clearTimeout(t);
-            t = setTimeout(() => { e.deltaY > 0 ? this.next() : this.prev(); }, 60);
-        }, { passive: false });
-    }
+    currentPage = name;
 
-    setupTouch() {
-        let sx = 0, sy = 0;
-        this.stage.addEventListener('touchstart', (e) => {
-            sx = e.touches[0].clientX; sy = e.touches[0].clientY;
-        }, { passive: true });
-        this.stage.addEventListener('touchend', (e) => {
-            const dx = e.changedTouches[0].clientX - sx;
-            const dy = e.changedTouches[0].clientY - sy;
-            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) dx > 0 ? this.prev() : this.next();
-            else if (Math.abs(dy) > 50) dy > 0 ? this.prev() : this.next();
-        });
-    }
+    // 关闭移动菜单
+    document.getElementById('navLinks').classList.remove('open');
 
-    show(i) {
-        this.current = Math.max(0, Math.min(i, this.slides.length - 1));
-        this.slides.forEach((s, idx) => s.classList.toggle('active', idx === this.current));
-    }
-
-    next() { if (this.current < this.slides.length - 1) this.show(this.current + 1); }
-    prev() { if (this.current > 0) this.show(this.current - 1); }
+    // 滚动到顶部
+    window.scrollTo(0, 0);
 }
 
-// ============================================
-// 编辑功能
-// ============================================
+// ===== 移动端菜单 =====
+function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+}
+
+// ===== 相册灯箱 =====
+const photos = [
+    '微信图片_20260618163410_594_2.jpg',
+    '微信图片_20260618163412_595_2.jpg',
+    '微信图片_20260618163414_597_2.jpg',
+    '微信图片_20260618163417_598_2.jpg',
+    '微信图片_20260618163419_599_2.jpg',
+    '微信图片_20260618164104_600_2.jpg',
+];
+let lightboxIdx = 0;
+
+function openLightbox(idx) {
+    lightboxIdx = idx;
+    document.getElementById('lightboxImg').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function prevPhoto() {
+    lightboxIdx = (lightboxIdx - 1 + photos.length) % photos.length;
+    document.getElementById('lightboxImg').src = photos[lightboxIdx];
+}
+
+function nextPhoto() {
+    lightboxIdx = (lightboxIdx + 1) % photos.length;
+    document.getElementById('lightboxImg').src = photos[lightboxIdx];
+}
+
+document.addEventListener('keydown', (e) => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'ArrowRight') nextPhoto();
+});
+
+// ===== Hash 路由 =====
+function onHashChange() {
+    const hash = window.location.hash.replace('#', '') || 'home';
+    const validPages = ['home', 'about', 'journey', 'gallery', 'thanks'];
+    if (validPages.includes(hash)) showPage(hash);
+}
+window.addEventListener('hashchange', onHashChange);
+onHashChange();
+
+// ===== 编辑模式：点右上角3次开启 =====
+let clickCount = 0;
+document.querySelector('.nav-logo').addEventListener('click', () => {
+    clickCount++;
+    if (clickCount >= 3) {
+        clickCount = 0;
+        toggleEditMode();
+    }
+    setTimeout(() => { clickCount = 0; }, 1000);
+});
+
 let editing = false;
-
-function toggleEdit() {
+function toggleEditMode() {
     editing = !editing;
-    const btn = document.getElementById('editBtn');
-    const saveBtn = document.getElementById('saveBtn');
-
-    if (editing) {
-        document.body.classList.add('editing');
-        // 给所有带 data-editable 的元素加上 contenteditable
-        document.querySelectorAll('[data-editable]').forEach(el => {
+    document.querySelectorAll('[data-editable]').forEach(el => {
+        if (editing) {
             el.setAttribute('contenteditable', 'true');
-        });
-        btn.textContent = '✅ 完成编辑';
-        btn.classList.add('active');
-        saveBtn.style.display = 'block';
-    } else {
-        document.body.classList.remove('editing');
-        document.querySelectorAll('[data-editable]').forEach(el => {
+            el.style.outline = '2px dashed #5b8c6f';
+            el.style.outlineOffset = '4px';
+            el.style.cursor = 'text';
+        } else {
             el.removeAttribute('contenteditable');
-        });
-        btn.textContent = '✏️ 编辑文字';
-        btn.classList.remove('active');
-        saveBtn.style.display = 'none';
-    }
+            el.style.outline = '';
+            el.style.outlineOffset = '';
+            el.style.cursor = '';
+        }
+    });
 }
-
-function saveToFile() {
-    // 先移除编辑状态，保存干净的 HTML
-    const wasEditing = editing;
-    if (wasEditing) toggleEdit();
-
-    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = '毕业总结.html';
-    a.click();
-    URL.revokeObjectURL(url);
-
-    // 恢复编辑状态
-    if (wasEditing) toggleEdit();
-}
-
-// 启动
-new SlidePresentation();
 </script>
 </body>
 </html>
