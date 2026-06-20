@@ -6,605 +6,787 @@
 <title>毕业纪念 · 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ===== 颜色变量 ===== */
+/* ============================================
+   基础变量
+   ============================================ */
 :root {
-    --bg: #f8faf7;
+    --bg: #fafbf8;
     --white: #ffffff;
     --green: #5b8c6f;
-    --green-light: #e8f0ea;
+    --green-light: #eaf2ed;
     --green-dark: #3d6349;
-    --text: #2c2c2c;
-    --text-light: #6b7280;
-    --text-lighter: #9ca3af;
-    --border: #e5e7eb;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-    --radius: 12px;
-    --max-width: 960px;
+    --text: #1e1e1e;
+    --text-mid: #4a4a4a;
+    --text-light: #8a8a8a;
+    --text-lighter: #b0b0b0;
+    --border: #e8ebe6;
+    --max-w: 1000px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
     font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-/* ===== 顶部导航 ===== */
+/* ============================================
+   固定顶部导航
+   ============================================ */
 .nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    z-index: 1000;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(250,251,248,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
 }
+.nav.scrolled { border-bottom-color: var(--border); }
 .nav-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
+    max-width: var(--max-w); margin: 0 auto;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px; height: 56px;
+    height: 60px; padding: 0 24px;
 }
 .nav-logo {
     font-family: 'Noto Serif SC', serif;
-    font-size: 18px; font-weight: 600;
-    color: var(--green-dark);
+    font-size: 17px; font-weight: 600; color: var(--green-dark);
     letter-spacing: 0.04em;
 }
-.nav-links {
-    display: flex; gap: 4px;
-    list-style: none;
+.nav-dots {
+    display: flex; gap: 10px; list-style: none;
 }
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-light);
-    font-size: 14px; font-weight: 500;
-    padding: 6px 14px; border-radius: 6px;
-    transition: all 0.2s;
+.nav-dots a {
+    display: block; width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
 }
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--green-dark);
-    background: var(--green-light);
-}
-.nav-mobile-toggle {
-    display: none;
-    background: none; border: none;
-    font-size: 24px; cursor: pointer;
-    color: var(--text);
-    padding: 4px;
+.nav-dots a.active,
+.nav-dots a:hover {
+    background: var(--green);
+    width: 24px; border-radius: 4px;
 }
 
-/* ===== 页面容器 ===== */
-.page {
-    display: none;
-    padding-top: 56px;
+/* ============================================
+   每个 Section
+   ============================================ */
+.section {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
 }
-.page.active { display: block; }
-
-.page-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 80px 24px 60px;
+.section-inner {
+    max-width: var(--max-w); width: 100%;
+    position: relative; z-index: 2;
 }
 
-/* ===== 首页 Hero ===== */
-.hero {
+/* ============================================
+   滚动渐现动画
+   ============================================ */
+.reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+                transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+    opacity: 1; transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ============================================
+   SECTION 1: 封面 Hero
+   ============================================ */
+#hero {
+    background: linear-gradient(180deg, #fafbf8 0%, #eaf2ed 60%, #fafbf8 100%);
     text-align: center;
-    padding: 120px 24px 80px;
 }
 .hero-badge {
     display: inline-block;
-    font-size: 13px; font-weight: 500;
+    font-size: 13px; font-weight: 600;
     color: var(--green-dark);
-    background: var(--green-light);
-    padding: 6px 18px; border-radius: 20px;
-    letter-spacing: 0.06em;
-    margin-bottom: 32px;
+    background: var(--white);
+    padding: 8px 22px; border-radius: 24px;
+    letter-spacing: 0.08em;
+    margin-bottom: 36px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.hero h1 {
+.hero-year {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 120px; font-weight: 900;
+    color: var(--green);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
+}
+.hero-title {
     font-family: 'Noto Serif SC', serif;
     font-size: 56px; font-weight: 600;
     color: var(--text);
-    line-height: 1.25;
+    line-height: 1.3;
     margin-bottom: 20px;
 }
-.hero h1 .highlight {
-    color: var(--green);
-}
-.hero p {
-    font-size: 18px; color: var(--text-light);
-    max-width: 500px; margin: 0 auto 40px;
+.hero-sub {
+    font-size: 18px; color: var(--text-mid);
+    max-width: 480px; margin: 0 auto 48px;
     line-height: 1.7;
 }
-.hero-actions {
-    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-}
-.btn {
-    display: inline-block;
-    font-family: inherit;
-    font-size: 15px; font-weight: 500;
-    padding: 12px 28px; border-radius: 8px;
-    text-decoration: none;
+.hero-scroll-hint {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text-lighter); letter-spacing: 0.06em;
     cursor: pointer;
-    transition: all 0.2s;
-    border: none;
+    animation: bounce 2s infinite;
 }
-.btn-primary {
-    background: var(--green);
-    color: #fff;
+.hero-scroll-hint span {
+    width: 24px; height: 24px;
+    border-right: 1.5px solid var(--text-lighter);
+    border-bottom: 1.5px solid var(--text-lighter);
+    transform: rotate(45deg);
 }
-.btn-primary:hover {
-    background: var(--green-dark);
-}
-.btn-outline {
-    background: var(--white);
-    color: var(--green-dark);
-    border: 1px solid var(--border);
-}
-.btn-outline:hover {
-    border-color: var(--green);
-    background: var(--green-light);
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
 }
 
-/* ===== 通用区块标题 ===== */
-.section-title {
+/* ============================================
+   SECTION 2: 开篇
+   ============================================ */
+#opening .section-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+}
+.opening-num {
     font-family: 'Noto Serif SC', serif;
-    font-size: 32px; font-weight: 600;
-    color: var(--text);
+    font-size: 200px; font-weight: 900; line-height: 0.7;
+    color: var(--green-light);
+    pointer-events: none;
+}
+.opening-text h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 36px; font-weight: 600; margin-bottom: 20px;
+}
+.opening-text p {
+    font-size: 17px; color: var(--text-mid); line-height: 1.9;
+}
+
+/* ============================================
+   SECTION 3: 入学记忆
+   ============================================ */
+#memory {
+    background: var(--white);
+}
+.memory-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+}
+.memory-image {
+    aspect-ratio: 4/3; border-radius: 16px;
+    background: var(--green-light);
+    overflow: hidden;
+}
+.memory-image img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.memory-text .kicker {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+    color: var(--green); text-transform: uppercase;
     margin-bottom: 12px;
 }
-.section-subtitle {
-    font-size: 15px; color: var(--text-light);
-    margin-bottom: 40px;
+.memory-text h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 36px; font-weight: 600; margin-bottom: 20px;
+}
+.memory-text p {
+    font-size: 17px; color: var(--text-mid); line-height: 1.9;
 }
 
-/* ===== 关于我 ===== */
-.about-grid {
+/* ============================================
+   SECTION 4-7: 时间线（横向卡片）
+   ============================================ */
+.timeline-section h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 36px; font-weight: 600;
+    margin-bottom: 48px; text-align: center;
+}
+.tl-cards {
     display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 48px;
-    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
-.about-avatar {
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: var(--green-light);
-    display: flex; align-items: center; justify-content: center;
+.tl-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.tl-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+.tl-year {
     font-family: 'Noto Serif SC', serif;
-    font-size: 64px; color: var(--green);
-    margin: 0 auto;
-}
-.about-list {
-    list-style: none;
-    display: grid; gap: 16px;
-}
-.about-list li {
-    display: flex; gap: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-}
-.about-label {
-    font-size: 13px; font-weight: 500;
-    color: var(--text-lighter);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    width: 80px; flex-shrink: 0;
-    padding-top: 2px;
-}
-.about-value {
-    font-size: 16px; color: var(--text);
-}
-
-/* ===== 时间线 ===== */
-.timeline {
-    position: relative;
-    padding-left: 32px;
-}
-.timeline::before {
-    content: '';
-    position: absolute; left: 8px; top: 0; bottom: 0;
-    width: 2px; background: var(--green-light);
-}
-.timeline-item {
-    position: relative;
-    margin-bottom: 40px;
-}
-.timeline-item::before {
-    content: '';
-    position: absolute; left: -28px; top: 6px;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--green);
-    border: 3px solid var(--bg);
-}
-.timeline-year {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 13px; font-weight: 600;
+    font-size: 48px; font-weight: 700;
     color: var(--green);
-    letter-spacing: 0.06em;
-    margin-bottom: 4px;
-}
-.timeline-item h3 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 22px; font-weight: 600;
-    color: var(--text);
+    line-height: 1;
     margin-bottom: 8px;
 }
-.timeline-item p {
-    font-size: 15px; color: var(--text-light);
+.tl-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px; font-weight: 600;
+    margin-bottom: 10px;
+}
+.tl-desc {
+    font-size: 14px; color: var(--text-light);
     line-height: 1.7;
 }
 
-/* ===== 相册 ===== */
-.gallery {
+/* ============================================
+   SECTION 5: 学习 & 里程碑
+   ============================================ */
+#milestones {
+    background: var(--white);
+}
+.milestone-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+.ms-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex; gap: 20px; align-items: flex-start;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.ms-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+}
+.ms-icon {
+    font-size: 36px; flex-shrink: 0;
+}
+.ms-card h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px; font-weight: 600;
+    margin-bottom: 6px;
+}
+.ms-card p {
+    font-size: 14px; color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* ============================================
+   SECTION 6: 金句
+   ============================================ */
+#quote {
+    background: linear-gradient(180deg, #fafbf8 0%, var(--green-light) 100%);
+    text-align: center;
+}
+.quote-mark {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 160px; font-weight: 900;
+    color: var(--green);
+    line-height: 0.5;
+    margin-bottom: 40px;
+}
+.quote-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 32px; font-weight: 500;
+    line-height: 1.6;
+    max-width: 680px; margin: 0 auto 28px;
+}
+.quote-author {
+    font-size: 16px; color: var(--text-light);
+    font-style: italic;
+}
+
+/* ============================================
+   SECTION 7: 照片墙
+   ============================================ */
+.photo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    margin-top: 12px;
 }
-.gallery-item {
-    aspect-ratio: 4 / 3;
+.photo-item {
+    aspect-ratio: 4/3;
+    border-radius: 14px;
     overflow: hidden;
-    border-radius: var(--radius);
-    background: var(--green-light);
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                box-shadow 0.35s;
 }
-.gallery-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+.photo-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
 }
-.gallery-item img {
+.photo-item img {
     width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
+    object-fit: cover; display: block;
 }
-/* 灯箱 */
+
+/* ============================================
+   SECTION 8: 致谢
+   ============================================ */
+.thanks-cloud {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    justify-content: center; margin-top: 12px;
+}
+.thanks-tag {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px; font-weight: 400;
+    color: var(--text-mid);
+    padding: 12px 24px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background: var(--white);
+    transition: all 0.3s;
+}
+.thanks-tag:hover {
+    border-color: var(--green);
+    color: var(--green-dark);
+    background: var(--green-light);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   SECTION 9: 未来
+   ============================================ */
+#future {
+    background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+    text-align: center; color: #fff;
+}
+#future .green-section-title { color: rgba(255,255,255,0.7); }
+#future h2 { color: #fff; }
+#future .future-quote { color: rgba(255,255,255,0.9); }
+#future .future-author { color: rgba(255,255,255,0.6); }
+.future-icon {
+    font-size: 64px; margin-bottom: 28px;
+}
+.future-quote {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 30px; font-weight: 500;
+    line-height: 1.6;
+    max-width: 640px; margin: 0 auto 20px;
+}
+.future-author {
+    font-size: 16px; margin-bottom: 48px;
+}
+.future-btn {
+    display: inline-block;
+    background: #fff;
+    color: var(--green-dark);
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: transform 0.3s;
+}
+.future-btn:hover { transform: scale(1.05); }
+
+/* ============================================
+   SECTION 10: 尾声
+   ============================================ */
+#end {
+    min-height: 60vh;
+    text-align: center;
+}
+.end-year {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 140px; font-weight: 900;
+    color: var(--green-light);
+    line-height: 1;
+    margin-bottom: 12px;
+}
+.end-text {
+    font-size: 18px; color: var(--text-mid);
+    margin-bottom: 8px;
+}
+.end-by {
+    font-size: 14px; color: var(--text-lighter);
+}
+
+/* ============================================
+   灯箱
+   ============================================ */
 .lightbox {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 9999;
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.94); z-index: 9999;
     align-items: center; justify-content: center;
     cursor: pointer;
 }
 .lightbox.open { display: flex; }
 .lightbox img {
     max-width: 90vw; max-height: 85vh;
-    border-radius: 8px;
-    object-fit: contain;
+    border-radius: 8px; object-fit: contain;
 }
 .lightbox-close {
-    position: absolute; top: 20px; right: 30px;
-    font-size: 36px; color: #fff;
-    cursor: pointer;
+    position: absolute; top: 24px; right: 36px;
+    font-size: 32px; color: #fff; cursor: pointer;
     background: none; border: none;
-    font-family: inherit;
 }
 .lightbox-prev, .lightbox-next {
     position: absolute; top: 50%;
-    font-size: 36px; color: #fff;
-    background: rgba(255,255,255,0.15);
+    font-size: 32px; color: #fff;
+    background: rgba(255,255,255,0.12);
     border: none; border-radius: 50%;
-    width: 48px; height: 48px;
-    cursor: pointer;
+    width: 48px; height: 48px; cursor: pointer;
     transform: translateY(-50%);
     transition: background 0.2s;
 }
-.lightbox-prev:hover, .lightbox-next:hover {
-    background: rgba(255,255,255,0.3);
-}
-.lightbox-prev { left: 30px; }
-.lightbox-next { right: 30px; }
+.lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.25); }
+.lightbox-prev { left: 28px; }
+.lightbox-next { right: 28px; }
 
-/* ===== 致谢 ===== */
-.thanks-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+/* ============================================
+   通用绿色段标题
+   ============================================ */
+.green-section-title {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
 }
-.thanks-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    text-align: center;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.thanks-card:hover {
-    border-color: var(--green);
-    box-shadow: var(--shadow);
-}
-.thanks-icon {
-    font-size: 28px; margin-bottom: 12px;
-}
-.thanks-card h4 {
+.section h2 {
     font-family: 'Noto Serif SC', serif;
-    font-size: 17px; font-weight: 500;
-    color: var(--text);
+    font-size: 36px; font-weight: 600;
+    margin-bottom: 24px;
 }
-.thanks-card span {
-    font-size: 13px; color: var(--text-lighter);
-}
-
-/* ===== 页脚 ===== */
-.footer {
-    text-align: center;
-    padding: 40px 24px;
-    border-top: 1px solid var(--border);
-    color: var(--text-lighter);
-    font-size: 13px;
+.section-sub {
+    font-size: 17px; color: var(--text-mid);
+    line-height: 1.8;
+    max-width: 640px;
 }
 
-/* ===== 响应式 ===== */
-@media (max-width: 768px) {
-    .nav-mobile-toggle { display: block; }
-    .nav-links {
-        display: none;
-        position: absolute; top: 56px; left: 0; right: 0;
-        background: rgba(255,255,255,0.98);
-        flex-direction: column;
-        padding: 12px 24px; gap: 2px;
-        border-bottom: 1px solid var(--border);
-    }
-    .nav-links.open { display: flex; }
-    .hero h1 { font-size: 36px; }
-    .about-grid { grid-template-columns: 1fr; gap: 32px; }
-    .gallery { grid-template-columns: repeat(2, 1fr); }
-    .thanks-grid { grid-template-columns: repeat(2, 1fr); }
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 900px) {
+    .hero-year { font-size: 80px; }
+    .hero-title { font-size: 36px; }
+    #opening .section-inner { grid-template-columns: 1fr; gap: 40px; }
+    .opening-num { font-size: 100px; }
+    .memory-grid { grid-template-columns: 1fr; gap: 32px; }
+    .tl-cards { grid-template-columns: repeat(2, 1fr); }
+    .milestone-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .quote-text { font-size: 24px; }
+    .section h2 { font-size: 28px; }
+    .end-year { font-size: 80px; }
 }
-@media (max-width: 480px) {
-    .hero h1 { font-size: 28px; }
-    .gallery { grid-template-columns: 1fr; }
-    .thanks-grid { grid-template-columns: 1fr; }
+@media (max-width: 500px) {
+    .hero-year { font-size: 56px; }
+    .hero-title { font-size: 26px; }
+    .tl-cards { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: 1fr; }
+    .thanks-cloud { gap: 8px; }
+    .thanks-tag { font-size: 15px; padding: 10px 18px; }
+    .future-quote { font-size: 22px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== 导航栏 ===== -->
-<nav class="nav">
+<!-- ===== 导航 ===== -->
+<nav class="nav" id="nav">
     <div class="nav-inner">
         <span class="nav-logo">🎓 2026 毕业纪念</span>
-        <button class="nav-mobile-toggle" id="menuBtn" onclick="toggleMenu()">☰</button>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home" data-page="home" class="active" onclick="showPage('home')">首页</a></li>
-            <li><a href="#about" data-page="about" onclick="showPage('about')">关于我</a></li>
-            <li><a href="#journey" data-page="journey" onclick="showPage('journey')">大学时光</a></li>
-            <li><a href="#gallery" data-page="gallery" onclick="showPage('gallery')">珍贵相册</a></li>
-            <li><a href="#thanks" data-page="thanks" onclick="showPage('thanks')">致谢</a></li>
+        <ul class="nav-dots" id="navDots">
+            <li><a href="#hero" data-section="0" class="active"></a></li>
+            <li><a href="#opening" data-section="1"></a></li>
+            <li><a href="#memory" data-section="2"></a></li>
+            <li><a href="#timeline" data-section="3"></a></li>
+            <li><a href="#milestones" data-section="4"></a></li>
+            <li><a href="#quote" data-section="5"></a></li>
+            <li><a href="#photos" data-section="6"></a></li>
+            <li><a href="#thanks" data-section="7"></a></li>
+            <li><a href="#future" data-section="8"></a></li>
+            <li><a href="#end" data-section="9"></a></li>
         </ul>
     </div>
 </nav>
 
-<!-- ===== 首页 ===== -->
-<section class="page active" id="page-home">
-    <div class="hero">
-        <div class="hero-badge">🎓 Class of 2026</div>
-        <h1>四年青春<span class="highlight">，</span><br>从这里再出发</h1>
-        <p>无论走多远，这段时光永远是我最宝贵的行囊。</p>
-        <div class="hero-actions">
-            <a href="#about" class="btn btn-primary" onclick="showPage('about')">了解更多</a>
-            <a href="#gallery" class="btn btn-outline" onclick="showPage('gallery')">看看相册</a>
+<!-- ==================== SECTION 1: 封面 ==================== -->
+<section class="section" id="hero">
+    <div class="section-inner">
+        <div class="hero-badge reveal">🎓 Class of 2026</div>
+        <div class="hero-year reveal reveal-delay-1">2026</div>
+        <h1 class="hero-title reveal reveal-delay-2">四年青春，<br>从这里再出发</h1>
+        <p class="hero-sub reveal reveal-delay-3">无论走多远，这段时光永远是我最宝贵的行囊。</p>
+        <div class="hero-scroll-hint reveal reveal-delay-4" onclick="document.getElementById('opening').scrollIntoView()">
+            <span></span> 向下滑动
         </div>
     </div>
+</section>
 
-    <div class="page-inner" style="padding-top:0; padding-bottom:60px">
-        <div class="about-grid">
-            <div class="about-avatar">🎓</div>
-            <div>
-                <h2 class="section-title">嗨，你好</h2>
-                <p class="section-subtitle">欢迎来到我的毕业纪念网站</p>
-                <p style="font-size:16px; color:var(--text-light); line-height:1.8;">
-                    这里是承载我四年大学生活的地方。<br>
-                    从2022到2026，从青涩到从容——<br>
-                    每一段经历、每一个遇见的人，<br>
-                    都构成了今天的我。<br><br>
-                    点开导航栏，一起回顾这段旅程。
+<!-- ==================== SECTION 2: 开篇 ==================== -->
+<section class="section" id="opening">
+    <div class="section-inner">
+        <div class="opening-num reveal">01</div>
+        <div class="opening-text">
+            <div class="green-section-title reveal reveal-delay-1">Opening</div>
+            <h2 class="reveal reveal-delay-2">故事从这里开始</h2>
+            <p class="reveal reveal-delay-3">
+                2022 年的秋天，我拖着大大的行李箱走进校园。<br>
+                眼前的一切都闪耀着新鲜的光芒——<br>
+                第一次推开图书馆的门、第一次在操场上跑到力竭、<br>
+                第一次在深夜的宿舍和室友聊到天亮。<br><br>
+                那些青涩的「第一次」，<br>
+                后来成了四年间最温暖的底色。
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 3: 入学记忆 ==================== -->
+<section class="section" id="memory">
+    <div class="section-inner">
+        <div class="memory-grid">
+            <div class="memory-image reveal">
+                <img src="微信图片_20260618163410_594_2.jpg" alt="校园记忆">
+            </div>
+            <div class="memory-text">
+                <div class="kicker reveal reveal-delay-1">Freshman Year</div>
+                <h2 class="reveal reveal-delay-2">十八岁的秋天</h2>
+                <p class="reveal reveal-delay-3">
+                    报到那天在人群中找不到宿舍楼的慌张，<br>
+                    第一次班会自我介绍时的心跳加速，<br>
+                    军训时被晒得黝黑的皮肤和结下的友谊……<br><br>
+                    那一年，世界很大，我们很小。<br>
+                    也正是那份「无知者无畏」，<br>
+                    让后来的每一步都变得可能。
                 </p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== 关于我 ===== -->
-<section class="page" id="page-about">
-    <div class="page-inner">
-        <h2 class="section-title">关于我</h2>
-        <p class="section-subtitle">一个普通大学生的四年</p>
+<!-- ==================== SECTION 4: 四年时间线 ==================== -->
+<section class="section timeline-section" id="timeline">
+    <div class="section-inner">
+        <div class="green-section-title reveal" style="text-align:center">Timeline</div>
+        <h2 class="reveal reveal-delay-1">时光印记</h2>
 
-        <div class="about-grid">
-            <div class="about-avatar">📚</div>
-            <ul class="about-list">
-                <li>
-                    <span class="about-label">姓名</span>
-                    <span class="about-value" data-editable>点击这里改成你的名字</span>
-                </li>
-                <li>
-                    <span class="about-label">学校</span>
-                    <span class="about-value" data-editable>你的大学名称</span>
-                </li>
-                <li>
-                    <span class="about-label">专业</span>
-                    <span class="about-value" data-editable>你的专业</span>
-                </li>
-                <li>
-                    <span class="about-label">毕业时间</span>
-                    <span class="about-value">2026 年 6 月</span>
-                </li>
-                <li>
-                    <span class="about-label">兴趣</span>
-                    <span class="about-value" data-editable>阅读 · 摄影 · 旅行 · 代码</span>
-                </li>
-            </ul>
-        </div>
-
-        <div style="margin-top:48px">
-            <h2 class="section-title">毕业感言</h2>
-            <p class="section-subtitle">写给自己的一段话</p>
-            <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:32px;">
-                <p style="font-family:'Noto Serif SC',serif; font-size:18px; line-height:1.9; color:var(--text);" data-editable>
-                    四年前，我带着忐忑和好奇走进了大学校园。<br>
-                    四年后，我带着满满的回忆和成长离开。<br><br>
-                    大学教给我最重要的不是知识本身，<br>
-                    而是面对未知时不再害怕的勇气。<br>
-                    感谢每一个出现在我生命中的人，<br>
-                    你们让这一段时光闪闪发光。
-                </p>
+        <div class="tl-cards">
+            <div class="tl-card reveal reveal-delay-1">
+                <div class="tl-year">2022</div>
+                <div class="tl-title">初识 · 新鲜</div>
+                <div class="tl-desc">拖着行李箱走进校园，一切都陌生又让人兴奋。那些「第一次」，现在想起来还会笑。</div>
+            </div>
+            <div class="tl-card reveal reveal-delay-2">
+                <div class="tl-year">2023</div>
+                <div class="tl-title">沉淀 · 探索</div>
+                <div class="tl-desc">课业深入，参加社团、做项目、写论文。在忙碌中找到了自己真正喜欢的方向。</div>
+            </div>
+            <div class="tl-card reveal reveal-delay-3">
+                <div class="tl-year">2024</div>
+                <div class="tl-title">突破 · 成长</div>
+                <div class="tl-desc">实习看到校园外的世界，竞赛检验能力。开始认真思考未来的方向。</div>
+            </div>
+            <div class="tl-card reveal reveal-delay-4">
+                <div class="tl-year">2026</div>
+                <div class="tl-title">告别 · 前行</div>
+                <div class="tl-desc">穿上学位服，四年的画面像电影闪过。带着所有回忆，去往更远的地方。</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== 大学时光 ===== -->
-<section class="page" id="page-journey">
-    <div class="page-inner">
-        <h2 class="section-title">大学时光</h2>
-        <p class="section-subtitle">从入学到毕业，四个春夏秋冬</p>
+<!-- ==================== SECTION 5: 里程碑 ==================== -->
+<section class="section" id="milestones">
+    <div class="section-inner">
+        <div class="green-section-title reveal">Milestones</div>
+        <h2 class="reveal reveal-delay-1">成长里程碑</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin-bottom:36px">每一段认真走过的路，都会在某个时刻被看见。</p>
 
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-year">2022 年</div>
-                <h3>🎒 初识 · 新鲜</h3>
-                <p>拖着大大的行李箱走进校园，一切都陌生又让人兴奋。第一次班会、第一次去图书馆、第一次通宵赶作业……那些「第一次」，现在想起来还是会笑。</p>
+        <div class="milestone-grid">
+            <div class="ms-card reveal reveal-delay-1">
+                <div class="ms-icon">🏆</div>
+                <div>
+                    <h3>奖学金</h3>
+                    <p>努力被认真认可的第一个时刻，给了自己莫大的信心。</p>
+                </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-year">2023 年</div>
-                <h3>📖 沉淀 · 探索</h3>
-                <p>课业渐渐深入，也开始尝试各种可能。加入社团、参加比赛、做项目、写论文——在忙碌中，慢慢发现了自己真正喜欢的方向。</p>
+            <div class="ms-card reveal reveal-delay-2">
+                <div class="ms-icon">⚡</div>
+                <div>
+                    <h3>竞赛获奖</h3>
+                    <p>和队友并肩作战的日子，熬夜改方案都是甜的。</p>
+                </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-year">2024 年</div>
-                <h3>🚀 突破 · 成长</h3>
-                <p>关键的一年。实习让我看到了校园外的世界，竞赛和科研让能力得到检验。也开始认真思考：毕业之后，去哪里？做什么？成为什么样的人？</p>
+            <div class="ms-card reveal reveal-delay-3">
+                <div class="ms-icon">💼</div>
+                <div>
+                    <h3>实习经历</h3>
+                    <p>从校园到职场的第一步，学到了课本上没有的东西。</p>
+                </div>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-year">2026 年</div>
-                <h3>🎓 告别 · 再出发</h3>
-                <p>穿上学位服的那个瞬间，四年的画面像电影一样闪过。四年不是一个句号，而是一个冒号——带着所有的回忆与成长，去往更远的地方。</p>
+            <div class="ms-card reveal reveal-delay-4">
+                <div class="ms-icon">📝</div>
+                <div>
+                    <h3>毕业论文</h3>
+                    <p>大学最后一份作业，也是对自己四年最好的交代。</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== 珍贵相册 ===== -->
-<section class="page" id="page-gallery">
-    <div class="page-inner">
-        <h2 class="section-title">珍贵相册</h2>
-        <p class="section-subtitle">定格那些回不去的瞬间</p>
+<!-- ==================== SECTION 6: 金句 ==================== -->
+<section class="section" id="quote">
+    <div class="section-inner">
+        <div class="quote-mark reveal">"</div>
+        <p class="quote-text reveal reveal-delay-1">
+            大学教给我最重要的不是某个知识点，<br>
+            而是面对未知时不再害怕的勇气。<br>
+            四年最宝贵的收获，<br>
+            是学会了如何成为更好的自己。
+        </p>
+        <p class="quote-author reveal reveal-delay-2">— 毕业前夕，写于图书馆四楼靠窗的位置</p>
+    </div>
+</section>
 
-        <div class="gallery">
-            <div class="gallery-item" onclick="openLightbox(0)">
-                <img src="微信图片_20260618163410_594_2.jpg" alt="珍贵瞬间1">
+<!-- ==================== SECTION 7: 照片墙 ==================== -->
+<section class="section" id="photos">
+    <div class="section-inner">
+        <div class="green-section-title reveal" style="text-align:center">Gallery</div>
+        <h2 class="reveal reveal-delay-1" style="text-align:center">珍贵瞬间</h2>
+        <p class="reveal reveal-delay-2" style="text-align:center; color:var(--text-light); margin-bottom:36px;">点击任意照片放大查看</p>
+
+        <div class="photo-grid">
+            <div class="photo-item reveal reveal-delay-1" onclick="openLightbox(0)">
+                <img src="微信图片_20260618163410_594_2.jpg" alt="瞬间1">
             </div>
-            <div class="gallery-item" onclick="openLightbox(1)">
-                <img src="微信图片_20260618163412_595_2.jpg" alt="珍贵瞬间2">
+            <div class="photo-item reveal reveal-delay-2" onclick="openLightbox(1)">
+                <img src="微信图片_20260618163412_595_2.jpg" alt="瞬间2">
             </div>
-            <div class="gallery-item" onclick="openLightbox(2)">
-                <img src="微信图片_20260618163414_597_2.jpg" alt="珍贵瞬间3">
+            <div class="photo-item reveal reveal-delay-3" onclick="openLightbox(2)">
+                <img src="微信图片_20260618163414_597_2.jpg" alt="瞬间3">
             </div>
-            <div class="gallery-item" onclick="openLightbox(3)">
-                <img src="微信图片_20260618163417_598_2.jpg" alt="珍贵瞬间4">
+            <div class="photo-item reveal reveal-delay-3" onclick="openLightbox(3)">
+                <img src="微信图片_20260618163417_598_2.jpg" alt="瞬间4">
             </div>
-            <div class="gallery-item" onclick="openLightbox(4)">
-                <img src="微信图片_20260618163419_599_2.jpg" alt="珍贵瞬间5">
+            <div class="photo-item reveal reveal-delay-4" onclick="openLightbox(4)">
+                <img src="微信图片_20260618163419_599_2.jpg" alt="瞬间5">
             </div>
-            <div class="gallery-item" onclick="openLightbox(5)">
-                <img src="微信图片_20260618164104_600_2.jpg" alt="珍贵瞬间6">
+            <div class="photo-item reveal reveal-delay-5" onclick="openLightbox(5)">
+                <img src="微信图片_20260618164104_600_2.jpg" alt="瞬间6">
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== 致谢 ===== -->
-<section class="page" id="page-thanks">
-    <div class="page-inner">
-        <h2 class="section-title">致谢</h2>
-        <p class="section-subtitle">感谢每一个让这四年变得特别的人</p>
+<!-- ==================== SECTION 8: 致谢 ==================== -->
+<section class="section" id="thanks">
+    <div class="section-inner">
+        <div class="green-section-title reveal" style="text-align:center">Gratitude</div>
+        <h2 class="reveal reveal-delay-1" style="text-align:center">致谢</h2>
+        <p class="reveal reveal-delay-2" style="text-align:center; color:var(--text-light); margin-bottom:32px;">感谢每一个让这四年闪闪发光的人</p>
 
-        <div class="thanks-grid">
-            <div class="thanks-card">
-                <div class="thanks-icon">🏠</div>
-                <h4>亲爱的室友们</h4>
-                <span>一起熬夜赶作业、一起聊到天亮</span>
-            </div>
-            <div class="thanks-card">
-                <div class="thanks-icon">👨‍🏫</div>
-                <h4>耐心指导的导师</h4>
-                <span>在迷茫时为我指明方向</span>
-            </div>
-            <div class="thanks-card">
-                <div class="thanks-icon">🤝</div>
-                <h4>一起奋斗的队友</h4>
-                <span>竞赛、项目中肩并肩成长</span>
-            </div>
-            <div class="thanks-card">
-                <div class="thanks-icon">❤️</div>
-                <h4>永远支持的家人</h4>
-                <span>让我可以安心追逐梦想</span>
-            </div>
-            <div class="thanks-card">
-                <div class="thanks-icon">☕</div>
-                <h4>相伴成长的朋友们</h4>
-                <span>每一个深夜，每一次谈心</span>
-            </div>
-            <div class="thanks-card">
-                <div class="thanks-icon">🌿</div>
-                <h4>这所美丽的校园</h4>
-                <span>承载了四年最美好的回忆</span>
-            </div>
+        <div class="thanks-cloud">
+            <span class="thanks-tag reveal reveal-delay-1">🏠 亲爱的室友们</span>
+            <span class="thanks-tag reveal reveal-delay-2">👨‍🏫 耐心指导的导师</span>
+            <span class="thanks-tag reveal reveal-delay-2">🤝 一起熬夜的队友</span>
+            <span class="thanks-tag reveal reveal-delay-3">❤️ 永远支持的家人</span>
+            <span class="thanks-tag reveal reveal-delay-3">☕ 相伴成长的朋友</span>
+            <span class="thanks-tag reveal reveal-delay-4">📚 图书馆的管理员</span>
+            <span class="thanks-tag reveal reveal-delay-4">🍚 食堂的叔叔阿姨</span>
+            <span class="thanks-tag reveal reveal-delay-5">🌿 这所美丽的校园</span>
+            <span class="thanks-tag reveal reveal-delay-5">✨ 每一个擦肩而过的你</span>
         </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 9: 未来 ==================== -->
+<section class="section" id="future">
+    <div class="section-inner">
+        <div class="future-icon reveal">🚀</div>
+        <p class="future-quote reveal reveal-delay-1">
+            四年不是一个句号，而是一个冒号。<br>
+            带着所有的回忆与成长，<br>
+            去往更远的地方。
+        </p>
+        <p class="future-author reveal reveal-delay-2">— 写于 2026 年盛夏</p>
+        <a href="#end" class="future-btn reveal reveal-delay-3">⏤ 尾声 ⏤</a>
+    </div>
+</section>
+
+<!-- ==================== SECTION 10: 尾声 ==================== -->
+<section class="section" id="end">
+    <div class="section-inner">
+        <div class="end-year reveal">2026</div>
+        <p class="end-text reveal reveal-delay-1">Class of 2026 · 毕业快乐</p>
+        <p class="end-by reveal reveal-delay-2">愿此去繁花似锦，再相逢依旧如故</p>
     </div>
 </section>
 
 <!-- ===== 灯箱 ===== -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    <button class="lightbox-prev" onclick="event.stopPropagation(); prevPhoto()">‹</button>
-    <button class="lightbox-next" onclick="event.stopPropagation(); nextPhoto()">›</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation();prevPhoto()">‹</button>
+    <button class="lightbox-next" onclick="event.stopPropagation();nextPhoto()">›</button>
     <img src="" alt="" id="lightboxImg">
 </div>
 
-<!-- ===== 页脚 ===== -->
-<footer class="footer" style="display:none">
-    <p>🎓 Class of 2026 · 毕业快乐</p>
-</footer>
-
 <script>
-// ===== 页面切换 =====
-let currentPage = 'home';
+// ============================================
+// 滚动触发渐现
+// ============================================
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const page = document.getElementById('page-' + name);
-    if (page) page.classList.add('active');
+reveals.forEach(el => observer.observe(el));
 
-    // 更新导航高亮
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const link = document.querySelector(`[data-page="${name}"]`);
-    if (link) link.classList.add('active');
+// ============================================
+// 导航高亮 + nav 阴影
+// ============================================
+const sections = document.querySelectorAll('.section');
+const dots = document.querySelectorAll('.nav-dots a');
+const nav = document.getElementById('nav');
 
-    currentPage = name;
+function updateActiveDot() {
+    const scrollY = window.scrollY + window.innerHeight / 3;
 
-    // 关闭移动菜单
-    document.getElementById('navLinks').classList.remove('open');
+    sections.forEach((sec, i) => {
+        const top = sec.offsetTop;
+        const bottom = top + sec.offsetHeight;
+        if (scrollY >= top && scrollY < bottom) {
+            dots.forEach(d => d.classList.remove('active'));
+            dots[i].classList.add('active');
+        }
+    });
 
-    // 滚动到顶部
-    window.scrollTo(0, 0);
+    // nav 阴影
+    nav.classList.toggle('scrolled', window.scrollY > 30);
 }
 
-// ===== 移动端菜单 =====
-function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
-}
+window.addEventListener('scroll', updateActiveDot, { passive: true });
+updateActiveDot();
 
-// ===== 相册灯箱 =====
+// ============================================
+// 灯箱
+// ============================================
 const photos = [
     '微信图片_20260618163410_594_2.jpg',
     '微信图片_20260618163412_595_2.jpg',
@@ -613,30 +795,26 @@ const photos = [
     '微信图片_20260618163419_599_2.jpg',
     '微信图片_20260618164104_600_2.jpg',
 ];
-let lightboxIdx = 0;
+let idx = 0;
 
-function openLightbox(idx) {
-    lightboxIdx = idx;
-    document.getElementById('lightboxImg').src = photos[idx];
+function openLightbox(i) {
+    idx = i;
+    document.getElementById('lightboxImg').src = photos[i];
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
     document.body.style.overflow = '';
 }
-
 function prevPhoto() {
-    lightboxIdx = (lightboxIdx - 1 + photos.length) % photos.length;
-    document.getElementById('lightboxImg').src = photos[lightboxIdx];
+    idx = (idx - 1 + photos.length) % photos.length;
+    document.getElementById('lightboxImg').src = photos[idx];
 }
-
 function nextPhoto() {
-    lightboxIdx = (lightboxIdx + 1) % photos.length;
-    document.getElementById('lightboxImg').src = photos[lightboxIdx];
+    idx = (idx + 1) % photos.length;
+    document.getElementById('lightboxImg').src = photos[idx];
 }
-
 document.addEventListener('keydown', (e) => {
     const lb = document.getElementById('lightbox');
     if (!lb.classList.contains('open')) return;
@@ -644,44 +822,6 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') prevPhoto();
     if (e.key === 'ArrowRight') nextPhoto();
 });
-
-// ===== Hash 路由 =====
-function onHashChange() {
-    const hash = window.location.hash.replace('#', '') || 'home';
-    const validPages = ['home', 'about', 'journey', 'gallery', 'thanks'];
-    if (validPages.includes(hash)) showPage(hash);
-}
-window.addEventListener('hashchange', onHashChange);
-onHashChange();
-
-// ===== 编辑模式：点右上角3次开启 =====
-let clickCount = 0;
-document.querySelector('.nav-logo').addEventListener('click', () => {
-    clickCount++;
-    if (clickCount >= 3) {
-        clickCount = 0;
-        toggleEditMode();
-    }
-    setTimeout(() => { clickCount = 0; }, 1000);
-});
-
-let editing = false;
-function toggleEditMode() {
-    editing = !editing;
-    document.querySelectorAll('[data-editable]').forEach(el => {
-        if (editing) {
-            el.setAttribute('contenteditable', 'true');
-            el.style.outline = '2px dashed #5b8c6f';
-            el.style.outlineOffset = '4px';
-            el.style.cursor = 'text';
-        } else {
-            el.removeAttribute('contenteditable');
-            el.style.outline = '';
-            el.style.outlineOffset = '';
-            el.style.cursor = '';
-        }
-    });
-}
 </script>
 </body>
 </html>
